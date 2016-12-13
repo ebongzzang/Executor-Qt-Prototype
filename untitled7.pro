@@ -16,6 +16,7 @@ SOURCES += main.cpp\
         mainwindow.cpp
 
 HEADERS  += mainwindow.h \
-    stdafx.h
+    stdafx.h \
+    pathwidget.h
 
 FORMS    += mainwindow.ui

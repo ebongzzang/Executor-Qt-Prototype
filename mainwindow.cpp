@@ -29,6 +29,7 @@ void MainWindow::ViewFilelist(std::string sPath, QWidget * widget, QTreeView *tr
    treepath->setModel(dirmodel);
    dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
 }
+
 void MainWindow::GetPathFromTree()
 //주어진 Tree로 부터 경로를 얻는다.
 {
@@ -46,7 +47,26 @@ void MainWindow::convertPathToLabel()
     treeDialog->close();
 }
 
-//트리를 띄울 Dialog를 만든다.
+void MainWindow::popup_Msgbox(const char * text)
+{
+    QMessageBox msgBox;
+    msgBox.setText(text);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+}
+
+void MainWindow::backupPhase2()
+{
+ //   tabWidget->removeTab(0);
+ //   BackupWidget_2 = new QWidget();
+ //   tabWidget->insertTab(0,BackupWidget_2,QString());
+ //   checkBox = new QCheckBox(BackupWidget_2);
+ //   checkBox->setGeometry(QRect(40, 10, 161, 31));
+//checkBox->setText(QApplication::translate("BackupWidget_2", "System Backup", 0));
+
+}
+
+ //트리를 띄울 Dialog를 만든다.
 void MainWindow::cratePathDialog()
 {
     treeDialog = new QDialog();
@@ -70,8 +90,6 @@ void MainWindow::cratePathDialog()
 
 
      treeDialog->exec();
-
-
 }
 
     /*
@@ -79,13 +97,11 @@ void MainWindow::cratePathDialog()
      *
      */
 
-
-
 void MainWindow::on_pushButton_clicked()
 {
 
-  QString good = ui->lineEdit->text();
-  QString hey = ui->lineEdit_2->text();
+  QString enteredID = ui->lineEdit->text();
+  QString enteredPW = ui->lineEdit_2->text();
  /*  QPixmap pix("C:/backup.png");
   QIcon icon(pix);
 
@@ -97,51 +113,30 @@ void MainWindow::on_pushButton_clicked()
   ui->pushButton->setIcon(icon);
   ui->pushButton->setIconSize(pix.size());
 */
-  BackupWidget_1 = new QWidget(this);
 
- if((QString::compare(good,QString::fromStdString(str1),Qt::CaseSensitive) == 0) && (QString::compare(hey,QString::fromStdString(str2),Qt::CaseSensitive)) == 0)
+
+ if((QString::compare(enteredID,QString::fromStdString(dbID),Qt::CaseSensitive) == 0) && (QString::compare(enteredPW,QString::fromStdString(dbPW),Qt::CaseSensitive)) == 0)
     {
-     QMessageBox msgBox;
-     msgBox.setText("fdsa");
-     msgBox.setStandardButtons(QMessageBox::Ok);
-     msgBox.exec();
+     popup_Msgbox("Login Success!!");
      ui->centralWidget->hide();
+     //다음 창으로
+
+     BackupWidget_1 = new QWidget(this);
      BackupWidget_1->resize(1057,634);
      this->setCentralWidget(BackupWidget_1);
 
+     checkBox = new QCheckBox(tab);
+     checkBox->setObjectName(QStringLiteral("checkBox"));
+     checkBox->setGeometry(QRect(40, 10, 161, 31));
+checkBox->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
 
-
-     /*     label = new QLabel(BackupWidget_1);
-          label->setObjectName(QStringLiteral("label"));
-          label->setGeometry(QRect(50, 40, 47, 13));
-
-          label_2 = new QLabel(BackupWidget_1);
-          label_2->setObjectName(QStringLiteral("label_2"));
-          label_2->setGeometry(QRect(30, 70, 47, 13));
-
-          pushButton = new QPushButton(BackupWidget_1);
-          pushButton->setObjectName(QStringLiteral("pushButton"));
-          pushButton->setGeometry(QRect(300, 50, 75, 23));
-
-          lineEdit = new QLineEdit(BackupWidget_1);
-          lineEdit->setObjectName(QStringLiteral("lineEdit"));
-          lineEdit->setGeometry(QRect(130, 40, 113, 20));
-
-          lineEdit_2 = new QLineEdit(BackupWidget_1);
-          lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-          lineEdit_2->setGeometry(QRect(130, 70, 113, 20));
-*/
-     //다이어로그 추가하기
-
-
+     //탭 위젯 추가하기
           tabWidget = new QTabWidget(BackupWidget_1);
           tabWidget->setObjectName(QStringLiteral("tabWidget"));
           tabWidget->setGeometry(QRect(30, 100, 391, 171));
-
           tabWidget->resize( 800,300);
 
-
-          // 탭에 아이콘을 넣는 부분이다. CSS를 사용해서 넣어줌
+          // 탭에 아이콘을 넣는 부분이다. CSS를 사용해서 넣어줌 * 함수화 필요*
           tabWidget->setStyleSheet(QLatin1String("QTabBar::tab{\n"
   "    height: 30px;\n"
   "    width: 120px;\n"
@@ -224,6 +219,11 @@ void MainWindow::on_pushButton_clicked()
     pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
     pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
 
+    nextButtonBackup = new QPushButton(tab);
+    nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
+    nextButtonBackup->setGeometry(QRect(650, 200, 80, 40));
+    nextButtonBackup->setText(QApplication::translate("nextButtonBackup", "NEXT", 0));
+    connect(nextButtonBackup,SIGNAL(clicked()),this,SLOT(backupPhase2()));
     //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
     //글자도 잘림. 우선 나중에 수정하는걸로.
 

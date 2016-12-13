@@ -29,6 +29,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
 #include <QTextCodec>
+#include <PathWidget.h>
 
 //한글을 쓰기 위해
 #endif // STDAFX_H
