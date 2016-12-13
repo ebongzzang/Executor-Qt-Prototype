@@ -179,6 +179,8 @@ void MainWindow::on_pushButton_clicked()
     pathLabel->setGeometry(QRect(20, 440, 47, 13));
     pathLabel->setText(QApplication::translate("MainWindow","경로", 0));
 
+    connect(pathButton,SIGNAL(clicked(bool)),this,cratePathDialog());
+
     treeDialog = new QDialog();
     treeView = new QTreeView(treeDialog);
     treeView->setObjectName(QStringLiteral("treeView"));
