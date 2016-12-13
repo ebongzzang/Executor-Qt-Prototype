@@ -61,4 +61,28 @@ private:
     QString absPath;
 };
 
+
+
+/*     label = new QLabel(BackupWidget_1);
+     label->setObjectName(QStringLiteral("label"));
+     label->setGeometry(QRect(50, 40, 47, 13));
+
+     label_2 = new QLabel(BackupWidget_1);
+     label_2->setObjectName(QStringLiteral("label_2"));
+     label_2->setGeometry(QRect(30, 70, 47, 13));
+
+     pushButton = new QPushButton(BackupWidget_1);
+     pushButton->setObjectName(QStringLiteral("pushButton"));
+     pushButton->setGeometry(QRect(300, 50, 75, 23));
+
+     lineEdit = new QLineEdit(BackupWidget_1);
+     lineEdit->setObjectName(QStringLiteral("lineEdit"));
+     lineEdit->setGeometry(QRect(130, 40, 113, 20));
+
+     lineEdit_2 = new QLineEdit(BackupWidget_1);
+     lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+     lineEdit_2->setGeometry(QRect(130, 70, 113, 20));
+*/
+
+
 #endif // MAINWINDOW_H
