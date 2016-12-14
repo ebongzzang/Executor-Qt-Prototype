@@ -15,6 +15,7 @@ public:
     void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
+
     ~MainWindow();
 
 
@@ -24,8 +25,8 @@ private slots:
     void cratePathDialog();
     void convertPathToLabel();
     void backupPhase2();
-    void goNextPage();
-    void backBeforePage();
+    void goNextPage(QWidget *currentTab);
+    void backBeforePage(QWidget *currentTab);
 
 
 private:

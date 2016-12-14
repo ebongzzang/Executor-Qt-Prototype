@@ -48,10 +48,10 @@ void MainWindow::popupMsgbox(const char * text)
 }
 
 
-void MainWindow::goNextPage()
+void MainWindow::goNextPage(QWidget * currentTab)
 {
-         QList<QWidget *> widgets = tabBackup->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
-         if(tabindex <(widgets.count()-3))
+         QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+         if(tabindex <(widgets.count()-1))
         {
         widgets.at(tabindex)->hide();
          widgets.at(tabindex+1)->show();
@@ -65,11 +65,11 @@ void MainWindow::goNextPage()
 
 }
 
-void MainWindow::backBeforePage()
+void MainWindow::backBeforePage(QWidget * currentTab)
 {
     if(tabindex != 0)
     {
-    QList<QWidget *> widgets = tabBackup->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+    QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
 
    widgets.at(tabindex)->hide();
     widgets.at(tabindex-1)->show();
@@ -119,24 +119,6 @@ void MainWindow::backupPhase2()
     checkBoxBakOnce3->setGeometry(QRect(340, 20, 161, 31));
     checkBoxBakOnce3->setText(QApplication::translate("BackupWidget_1", "twice", 0));
 
-    tabPhase4->hide();
-
-    tabPhase5 = new QWidget(tabBackup);
-
-    checkBoxBakOnce4 = new QCheckBox(tabPhase5);
-    checkBoxBakOnce4->setObjectName(QStringLiteral("checkBoxBakOnce"));
-    checkBoxBakOnce4->setGeometry(QRect(540, 20, 161, 31));
-    checkBoxBakOnce4->setText(QApplication::translate("BackupWidget_1", "just like tt", 0));
-
-    tabPhase5->hide();
-
-    tabPhase6 = new QWidget(tabBackup);
-    checkBoxBakOnce5 = new QCheckBox(tabPhase6);
-    checkBoxBakOnce5->setObjectName(QStringLiteral("checkBoxBakOnce"));
-    checkBoxBakOnce5->setGeometry(QRect(440, 20, 161, 31));
-    checkBoxBakOnce5->setText(QApplication::translate("BackupWidget_1", "umm it's salty", 0));
-
-    tabPhase6->hide();
 }
 
  //트리를 띄울 Dialog를 만든다.
@@ -169,7 +151,6 @@ void MainWindow::cratePathDialog()
      * 푸쉬버튼,라인에딧,라벨 등 단순한 것들을 함수화 할 필요가 있어보임(예정)
      *
      */
-
 
 
 void MainWindow::on_pushButton_clicked()
@@ -281,18 +262,20 @@ void MainWindow::on_pushButton_clicked()
 
     backupPhase2();
 
+
     nextButtonBackup = new QPushButton(BackupWidget_1);
     nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
-    nextButtonBackup->setGeometry(QRect(650, 200, 80, 40));
+    nextButtonBackup->setGeometry(QRect(650, 500, 80, 40));
     nextButtonBackup->setText(QApplication::translate("BackupWidget_1", "NEXT", 0));
-    connect(nextButtonBackup,SIGNAL(clicked()),this,SLOT(goNextPage()));
 
 
     prevButtonBackup = new QPushButton(BackupWidget_1);
     prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
-    prevButtonBackup->setGeometry(QRect(550, 200, 80, 40));
+    prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
     prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0));
-    connect(prevButtonBackup,SIGNAL(clicked()),this,SLOT(backBeforePage()));
+
+    connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
+    connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
 
 
     //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
