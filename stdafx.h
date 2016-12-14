@@ -1,15 +1,16 @@
 #ifndef STDAFX_H
 #define STDAFX_H
-
+#include "stdafx.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <windows.h>
 #include <iostream>
-#include <QString>
+#include <string.h>
+
+#include <QDebug>
 #include <QMainWindow>
 #include <QString>
 #include <QMessageBox>
-#include <QlistWidget>
 #include <QFileSystemModel>
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -28,9 +29,7 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
-#include <QTextCodec>
-#include <PathWidget.h>
+#include "PathWidget.h"
 
-//한글을 쓰기 위해
 #endif // STDAFX_H
 

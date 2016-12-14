@@ -12,89 +12,76 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void ViewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
-    void popup_Msgbox(const char * text);
+    void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
+    void popupMsgbox(const char * text);
+    void makeNextButton(const char * buttonName, const char * belongWidget);
     ~MainWindow();
-
-
-
 
 
 private slots:
     void on_pushButton_clicked();
-    void GetPathFromTree();
+    void getPathFromTree();
     void cratePathDialog();
     void convertPathToLabel();
     void backupPhase2();
-   // void GetPathFromTree(QTreeView *treepath);
+    void goNextPage();
+    void backBeforePage();
+
 
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirmodel;
     QFileSystemModel *filemodel;
+
     std::string dbID = "";
-    std::string dbPW = "";
-    QWidget *BackupWidget_1;
-    QWidget *BackupWidget_2;
+    std::string dbPW = ""; //로그인 창의 비교할 값을 받는 변수(ex. sql)
 
-    QLabel *pathLabel_1;
-    QLabel *pathLabel_2;
-    QPushButton *pathButton;
+    QWidget *BackupWidget_1; //Login 창 이후 CentralWidget
+    QTabWidget *tabWidget; //Backup,Recvoery,Status 가 들어가는 탭 위젯
 
-    QLabel *label_2;
+    //추가 되는 탭들
+    QWidget *tabBackup; //BackupPhase1
+        QLabel *pathLabel_1;
+         QLabel *pathLabel_2;
+         QPushButton *pathButton;
+         QCheckBox *checkBoxBakSys ;
+         QCheckBox *checkBoxBakVol;
+         QCheckBox *checkBoxBakFile;
 
-    QLineEdit *lineEdit;
-    QLineEdit *lineEdit_2;
-    QTabWidget *tabWidget;
+         QPushButton *nextButtonBackup;
+         QPushButton *prevButtonBackup;
+         QPushButton *buttonDiaPath;
+         QDialog *treeDialog;
+            QTreeView *treeView;
+            QString absPath;
 
-    QCheckBox *checkBox ;
-    QCheckBox *checkBox_2;
-    QCheckBox *checkBox_3;
-    QPushButton *nextButtonBackup;
+    QWidget *tabPhase2; //BackupPhase2
+        QWidget *tabPhase3; //BackupPhase2
+         QWidget *tabPhase4; //BackupPhase2
+         QWidget *tabPhase5; //BackupPhase2
+         QWidget *tabPhase6; //BackupPhase2
+         QCheckBox *checkBoxBakOnce;
+         QCheckBox *checkBoxBakOnce2;
+         QCheckBox *checkBoxBakOnce3;
+         QCheckBox *checkBoxBakOnce4;
+         QCheckBox *checkBoxBakOnce5;
+         QCheckBox *checkBoxBakPerio;
+         QPushButton *ButtonBakPerio;
 
-    QDialog *treeDialog;
-    QPushButton *pathDiaButton;
+    int tabindex=0;
+    QWidget *tabRecovery;
 
 
-    QTreeView *treeView;
-    QWidget *tab;
-    QWidget *tab_2;
-    QWidget *tab_3;
-    QListWidget *listWidget;
+    QWidget *tabStatus;
+
+    QWidget *tabBackupSub;
+    QWidget *tabBackupSub2;
 
 
-    QString absPath;  
-    /*
-     *
-     * Backup Phase 1
-     *
-     *
-    */
+
+
+
 
 };
-
-
-
-/*     label = new QLabel(BackupWidget_1);
-     label->setObjectName(QStringLiteral("label"));
-     label->setGeometry(QRect(50, 40, 47, 13));
-
-     label_2 = new QLabel(BackupWidget_1);
-     label_2->setObjectName(QStringLiteral("label_2"));
-     label_2->setGeometry(QRect(30, 70, 47, 13));
-
-     pushButton = new QPushButton(BackupWidget_1);
-     pushButton->setObjectName(QStringLiteral("pushButton"));
-     pushButton->setGeometry(QRect(300, 50, 75, 23));
-
-     lineEdit = new QLineEdit(BackupWidget_1);
-     lineEdit->setObjectName(QStringLiteral("lineEdit"));
-     lineEdit->setGeometry(QRect(130, 40, 113, 20));
-
-     lineEdit_2 = new QLineEdit(BackupWidget_1);
-     lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-     lineEdit_2->setGeometry(QRect(130, 70, 113, 20));
-*/
-
 
 #endif // MAINWINDOW_H

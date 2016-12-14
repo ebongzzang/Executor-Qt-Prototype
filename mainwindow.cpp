@@ -1,15 +1,7 @@
+
 #include "mainwindow.h"
 #include "stdafx.h"
-#include <windows.h>
-#include <iostream>
-#include <QString>
-#include <iostream>
-#include <windows.h>
-#include <string.h>
-#include <QMessageBox>
-#include <QlistWidget>
-#include <QDebug>
-
+//메소드들 페이즈, 기능 별로 분리 필요
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,7 +14,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::ViewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath)
+void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath)
 {
    dirmodel = new QFileSystemModel(widget);
    dirmodel->setRootPath(QString::fromStdString(sPath));
@@ -30,7 +22,7 @@ void MainWindow::ViewFilelist(std::string sPath, QWidget * widget, QTreeView *tr
    dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
 }
 
-void MainWindow::GetPathFromTree()
+void MainWindow::getPathFromTree()
 //주어진 Tree로 부터 경로를 얻는다.
 {
     QModelIndexList list =  treeView->selectionModel()->selectedIndexes();
@@ -47,7 +39,7 @@ void MainWindow::convertPathToLabel()
     treeDialog->close();
 }
 
-void MainWindow::popup_Msgbox(const char * text)
+void MainWindow::popupMsgbox(const char * text)
 {
     QMessageBox msgBox;
     msgBox.setText(text);
@@ -55,15 +47,96 @@ void MainWindow::popup_Msgbox(const char * text)
     msgBox.exec();
 }
 
+
+void MainWindow::goNextPage()
+{
+         QList<QWidget *> widgets = tabBackup->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+         if(tabindex <(widgets.count()-3))
+        {
+        widgets.at(tabindex)->hide();
+         widgets.at(tabindex+1)->show();
+        tabindex++;
+                 qDebug()<<tabindex;
+        }
+        else
+         {
+             popupMsgbox("hey!! it's a last page okay?");
+         }
+
+}
+
+void MainWindow::backBeforePage()
+{
+    if(tabindex != 0)
+    {
+    QList<QWidget *> widgets = tabBackup->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+
+   widgets.at(tabindex)->hide();
+    widgets.at(tabindex-1)->show();
+    tabindex--;
+                 qDebug()<<tabindex;
+    }
+
+    else
+    {
+        popupMsgbox("do not click alright?");
+    }
+
+}
+
 void MainWindow::backupPhase2()
 {
- //   tabWidget->removeTab(0);
- //   BackupWidget_2 = new QWidget();
- //   tabWidget->insertTab(0,BackupWidget_2,QString());
- //   checkBox = new QCheckBox(BackupWidget_2);
- //   checkBox->setGeometry(QRect(40, 10, 161, 31));
-//checkBox->setText(QApplication::translate("BackupWidget_2", "System Backup", 0));
+    tabPhase2 = new QWidget(tabBackup);
 
+    checkBoxBakOnce = new QCheckBox(tabPhase2);
+    checkBoxBakOnce->setObjectName(QStringLiteral("checkBoxBakOnce"));
+    checkBoxBakOnce->setGeometry(QRect(40, 10, 161, 31));
+    checkBoxBakOnce->setText(QApplication::translate("BackupWidget_1", "Once", 0));
+
+    checkBoxBakPerio = new QCheckBox(tabPhase2);
+    checkBoxBakPerio->setObjectName(QStringLiteral("checkBoxBakPerio"));
+    checkBoxBakPerio->setGeometry(QRect(40, 40, 161, 31));
+    checkBoxBakPerio->setText(QApplication::translate("BackupWidget_1", "Periodic", 0));
+
+    ButtonBakPerio = new QPushButton(tabPhase2);
+    ButtonBakPerio->setObjectName(QStringLiteral("ButtonBakPerio"));
+    ButtonBakPerio->setGeometry(QRect(60, 80, 210, 70));
+    ButtonBakPerio->setText(QApplication::translate("BackupWidget_1", "Setup Period", 0));
+    tabPhase2->hide();
+
+   tabPhase3 = new QWidget(tabBackup);
+    checkBoxBakOnce2 = new QCheckBox(tabPhase3);
+    checkBoxBakOnce2->setObjectName(QStringLiteral("checkBoxBakOnce"));
+    checkBoxBakOnce2->setGeometry(QRect(140, 20, 161, 31));
+    checkBoxBakOnce2->setText(QApplication::translate("BackupWidget_1", "Once", 0));
+
+    tabPhase3->hide();
+
+    tabPhase4 = new QWidget(tabBackup);
+
+    checkBoxBakOnce3 = new QCheckBox(tabPhase4);
+    checkBoxBakOnce3->setObjectName(QStringLiteral("checkBoxBakOnce"));
+    checkBoxBakOnce3->setGeometry(QRect(340, 20, 161, 31));
+    checkBoxBakOnce3->setText(QApplication::translate("BackupWidget_1", "twice", 0));
+
+    tabPhase4->hide();
+
+    tabPhase5 = new QWidget(tabBackup);
+
+    checkBoxBakOnce4 = new QCheckBox(tabPhase5);
+    checkBoxBakOnce4->setObjectName(QStringLiteral("checkBoxBakOnce"));
+    checkBoxBakOnce4->setGeometry(QRect(540, 20, 161, 31));
+    checkBoxBakOnce4->setText(QApplication::translate("BackupWidget_1", "just like tt", 0));
+
+    tabPhase5->hide();
+
+    tabPhase6 = new QWidget(tabBackup);
+    checkBoxBakOnce5 = new QCheckBox(tabPhase6);
+    checkBoxBakOnce5->setObjectName(QStringLiteral("checkBoxBakOnce"));
+    checkBoxBakOnce5->setGeometry(QRect(440, 20, 161, 31));
+    checkBoxBakOnce5->setText(QApplication::translate("BackupWidget_1", "umm it's salty", 0));
+
+    tabPhase6->hide();
 }
 
  //트리를 띄울 Dialog를 만든다.
@@ -73,19 +146,19 @@ void MainWindow::cratePathDialog()
     treeView = new QTreeView(treeDialog);
     treeView->setObjectName(QStringLiteral("treeView"));
     treeView->setGeometry(QRect(30, 100, 256, 192));
-    MainWindow::ViewFilelist("C:/",treeDialog,treeView);
-    MainWindow::GetPathFromTree();
+    MainWindow::viewFilelist("C:/",treeDialog,treeView);
+    MainWindow::getPathFromTree();
 
-    pathDiaButton = new QPushButton(treeDialog);
-    pathDiaButton->setObjectName(QStringLiteral("pathDiaButton"));
-    pathDiaButton->setGeometry(QRect(100, 340, 75, 23));
-    pathDiaButton->setText(QApplication::translate("treeDialog", "click", 0));
+    buttonDiaPath = new QPushButton(treeDialog);
+    buttonDiaPath->setObjectName(QStringLiteral("buttonDiaPath"));
+    buttonDiaPath->setGeometry(QRect(100, 340, 75, 23));
+    buttonDiaPath->setText(QApplication::translate("treeDialog", "click", 0));
 
 
-     connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(GetPathFromTree()));
+     connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(getPathFromTree()));
      //사용자가 클릭하는 트리 값 받아오기
 
-     connect(pathDiaButton,SIGNAL(clicked(bool)),this,SLOT(convertPathToLabel()));
+     connect(buttonDiaPath,SIGNAL(clicked(bool)),this,SLOT(convertPathToLabel()));
      //ok 누르면 다이얼로그 종료
 
 
@@ -97,38 +170,23 @@ void MainWindow::cratePathDialog()
      *
      */
 
+
+
 void MainWindow::on_pushButton_clicked()
 {
 
   QString enteredID = ui->lineEdit->text();
   QString enteredPW = ui->lineEdit_2->text();
- /*  QPixmap pix("C:/backup.png");
-  QIcon icon(pix);
-
-   * image
-   *
-   */
-/*  QTransform trans;
-     pix= pix.transformed(trans.rotate(-90));
-  ui->pushButton->setIcon(icon);
-  ui->pushButton->setIconSize(pix.size());
-*/
-
 
  if((QString::compare(enteredID,QString::fromStdString(dbID),Qt::CaseSensitive) == 0) && (QString::compare(enteredPW,QString::fromStdString(dbPW),Qt::CaseSensitive)) == 0)
     {
-     popup_Msgbox("Login Success!!");
+     popupMsgbox("Login Success!!");
      ui->centralWidget->hide();
      //다음 창으로
 
      BackupWidget_1 = new QWidget(this);
      BackupWidget_1->resize(1057,634);
      this->setCentralWidget(BackupWidget_1);
-
-     checkBox = new QCheckBox(tab);
-     checkBox->setObjectName(QStringLiteral("checkBox"));
-     checkBox->setGeometry(QRect(40, 10, 161, 31));
-checkBox->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
 
      //탭 위젯 추가하기
           tabWidget = new QTabWidget(BackupWidget_1);
@@ -168,62 +226,75 @@ checkBox->setText(QApplication::translate("BackupWidget_1", "System Backup", 0))
   "\n"
   ""));
           //탭 3개를 만드는 부분이다.
-          tab = new QWidget();
-          tab->setObjectName(QStringLiteral("tab"));
-          tabWidget->addTab(tab, QString());
+          tabBackup = new QWidget();
+          tabBackup->setObjectName(QStringLiteral("tabBackup"));
+          tabWidget->addTab(tabBackup, QString());
 
-          tab_2 = new QWidget();
-          tab_2->setObjectName(QStringLiteral("tab_2"));
-          tabWidget->addTab(tab_2, QString());
+          tabBackupSub = new QWidget(tabBackup);
 
-          tab_3 = new QWidget();
-          tab_2->setObjectName(QStringLiteral("tab_3"));
-          tabWidget->addTab(tab_3, QString());
+          tabRecovery = new QWidget();
+          tabRecovery->setObjectName(QStringLiteral("tabRecovery"));
+          tabWidget->addTab(tabRecovery, QString());
+
+          tabStatus = new QWidget();
+          tabStatus->setObjectName(QStringLiteral("tabStatus"));
+          tabWidget->addTab(tabStatus, QString());
 
           //탭 1에 체크박스와 트리뷰를 넣어주는 부분이다.
 
-          checkBox = new QCheckBox(tab);
-          checkBox->setObjectName(QStringLiteral("checkBox"));
-          checkBox->setGeometry(QRect(40, 10, 161, 31));
-    checkBox->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
+        checkBoxBakSys = new QCheckBox(tabBackupSub);
+         checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
+          checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
+    checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
 
-          checkBox_2 = new QCheckBox(tab);
-          checkBox_2->setObjectName(QStringLiteral("checkBox_2"));
-          checkBox_2->setGeometry(QRect(40, 40, 161, 31));
-    checkBox_2->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
+          checkBoxBakVol = new QCheckBox(tabBackupSub);
+          checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
+          checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
+    checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
 
 
-          checkBox_3 = new QCheckBox(tab);
-          checkBox_3->setObjectName(QStringLiteral("checkBox_3"));
-          checkBox_3->setGeometry(QRect(40, 70, 161, 31));
-    checkBox_3->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
+          checkBoxBakFile = new QCheckBox(tabBackupSub);
+          checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
+          checkBoxBakFile->setGeometry(QRect(40, 70, 161, 31));
+    checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
 
     //
 
     //TreeView를 띄우는 새 창을 만드는 버튼
 
-    pathButton = new QPushButton(tab);
+    pathButton = new QPushButton(tabBackupSub);
     pathButton->setObjectName(QStringLiteral("pathButton"));
     pathButton->setGeometry(QRect(700, 135, 47, 23));
     pathButton->setText(QApplication::translate("BackupWidget_1", "click", 0));
     connect(pathButton,SIGNAL(clicked()),this,SLOT(cratePathDialog()));
 
 
-    pathLabel_1 = new QLabel(tab);
+    pathLabel_1 = new QLabel(tabBackupSub);
     pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
     pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
     pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
 
     //PATH 그 자체;;
-    pathLabel_2 = new QLabel(tab);
+    pathLabel_2 = new QLabel(tabBackupSub);
     pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
     pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
 
-    nextButtonBackup = new QPushButton(tab);
+    backupPhase2();
+
+    nextButtonBackup = new QPushButton(BackupWidget_1);
     nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
     nextButtonBackup->setGeometry(QRect(650, 200, 80, 40));
-    nextButtonBackup->setText(QApplication::translate("nextButtonBackup", "NEXT", 0));
-    connect(nextButtonBackup,SIGNAL(clicked()),this,SLOT(backupPhase2()));
+    nextButtonBackup->setText(QApplication::translate("BackupWidget_1", "NEXT", 0));
+    connect(nextButtonBackup,SIGNAL(clicked()),this,SLOT(goNextPage()));
+
+
+    prevButtonBackup = new QPushButton(BackupWidget_1);
+    prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
+    prevButtonBackup->setGeometry(QRect(550, 200, 80, 40));
+    prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0));
+    connect(prevButtonBackup,SIGNAL(clicked()),this,SLOT(backBeforePage()));
+
+
     //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
     //글자도 잘림. 우선 나중에 수정하는걸로.
 
