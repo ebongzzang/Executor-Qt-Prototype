@@ -22,8 +22,8 @@ void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *tr
    dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
 }
 
-void MainWindow::getPathFromTree()
-//주어진 Tree로 부터 경로를 얻는다.
+void MainWindow::getPathFromTree(void)
+//주어진 Tree로 부터 경로를 얻는다. * 인자 받는 수정 필요 *
 {
     QModelIndexList list =  treeView->selectionModel()->selectedIndexes();
     foreach (QModelIndex index, list)
@@ -84,7 +84,8 @@ void MainWindow::backBeforePage(QWidget * currentTab)
 
 }
 
-void MainWindow::backupPhase2()
+
+void MainWindow::backupPhase2(void)
 {
     tabPhase2 = new QWidget(tabBackup);
 
@@ -119,7 +120,45 @@ void MainWindow::backupPhase2()
     checkBoxBakOnce3->setGeometry(QRect(340, 20, 161, 31));
     checkBoxBakOnce3->setText(QApplication::translate("BackupWidget_1", "twice", 0));
 
+    tabPhase4->hide();
 }
+
+void MainWindow::addRowToRecoveryTable(const char * title,const char * path, const char * time)
+{
+    for(int i=0; i<4; i++)
+    {
+                     table->setItem(rowindex,0,new QTableWidgetItem(title));
+                     table->setItem(rowindex,1,new QTableWidgetItem(path));
+                     table->setItem(rowindex,2,new QTableWidgetItem(time));
+                     table->setCellWidget(rowindex,3,new QCheckBox()); //체크 박스 만들긴 했는데 값 받아오는건;;;
+    }
+    rowindex++;
+}
+
+void MainWindow::delRowToRecvoeryTable(const char * title)
+{
+    QList<QTableWidgetItem *> list = table->findItems(title,Qt::MatchExactly);
+    table->removeRow(list.at(0)->row());
+}
+
+
+void MainWindow::recoveryPhase1(void)
+{
+    table = new QTableWidget(tabRecoverySub);
+    table->resize(700,200);
+    table->setRowCount(10);
+    table->setColumnCount(4);
+  table->setHorizontalHeaderLabels(QString("Title;Path;Time;Select").split(";")); //column
+
+    addRowToRecoveryTable("asdf","c:\\","2016-10-25");
+    addRowToRecoveryTable("yeah","c:\\cc","2016-16-31");
+    addRowToRecoveryTable("yeah","c:\\cc","2016-16-31");
+
+    delRowToRecvoeryTable("asdf");
+
+    table->show();
+}
+
 
  //트리를 띄울 Dialog를 만든다.
 void MainWindow::cratePathDialog()
@@ -152,8 +191,7 @@ void MainWindow::cratePathDialog()
      *
      */
 
-
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked() //사실상의 메인함수
 {
 
   QString enteredID = ui->lineEdit->text();
@@ -166,7 +204,7 @@ void MainWindow::on_pushButton_clicked()
      //다음 창으로
 
      BackupWidget_1 = new QWidget(this);
-     BackupWidget_1->resize(1057,634);
+     BackupWidget_1->resize(850,434);
      this->setCentralWidget(BackupWidget_1);
 
      //탭 위젯 추가하기
@@ -217,9 +255,13 @@ void MainWindow::on_pushButton_clicked()
           tabRecovery->setObjectName(QStringLiteral("tabRecovery"));
           tabWidget->addTab(tabRecovery, QString());
 
+          tabRecoverySub = new QWidget(tabRecovery);
+
           tabStatus = new QWidget();
           tabStatus->setObjectName(QStringLiteral("tabStatus"));
           tabWidget->addTab(tabStatus, QString());
+
+          tabStatusSub = new QWidget(tabStatus);
 
           //탭 1에 체크박스와 트리뷰를 넣어주는 부분이다.
 
@@ -262,7 +304,6 @@ void MainWindow::on_pushButton_clicked()
 
     backupPhase2();
 
-
     nextButtonBackup = new QPushButton(BackupWidget_1);
     nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
     nextButtonBackup->setGeometry(QRect(650, 500, 80, 40));
@@ -273,9 +314,30 @@ void MainWindow::on_pushButton_clicked()
     prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
     prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
     prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0));
+    /*
+     * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
+     *
+    */
 
-    connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
-    connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
+    recoveryPhase1();
+
+
+
+    switch(tabWidget->currentIndex())
+    {
+        case 0: //tabBackup
+            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
+            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
+        break;
+        case 1: //tabRecovery
+            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabRecovery); });
+            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabRecovery); });
+        break;
+        case 2: //tabStatus
+            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabStatus); });
+            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabStatus); });
+        break;
+    }
 
 
     //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
@@ -305,10 +367,7 @@ void MainWindow::on_pushButton_clicked()
     }
   else
  {
-      QMessageBox msgBox;
-      msgBox.setText("아이디 혹은 비밀번호가 일치하지 않습니다.");
-      msgBox.setStandardButtons(QMessageBox::Ok);
-      msgBox.exec();
+   popupMsgbox("incorrect id or password.");
  }
 
 

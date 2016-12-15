@@ -30,6 +30,10 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
 #include "PathWidget.h"
+#include <QStandardItemModel>
+#include <QTableView>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 #endif // STDAFX_H
 

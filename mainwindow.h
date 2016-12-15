@@ -15,7 +15,9 @@ public:
     void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
-
+    void recoveryPhase1();
+    void addRowToRecoveryTable(const char * title,const char * path, const char * time);
+    void MainWindow::delRowToRecvoeryTable(const char * title);
     ~MainWindow();
 
 
@@ -32,7 +34,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QFileSystemModel *dirmodel;
-    QFileSystemModel *filemodel;
+    QStandardItemModel *model;
 
     std::string dbID = "";
     std::string dbPW = ""; //로그인 창의 비교할 값을 받는 변수(ex. sql)
@@ -42,6 +44,7 @@ private:
 
     //추가 되는 탭들
     QWidget *tabBackup; //BackupPhase1
+        QWidget *tabBackupSub;
         QLabel *pathLabel_1;
          QLabel *pathLabel_2;
          QPushButton *pathButton;
@@ -69,13 +72,19 @@ private:
          QCheckBox *checkBoxBakPerio;
          QPushButton *ButtonBakPerio;
 
-    int tabindex=0;
-    QWidget *tabRecovery;
+         QTableView *recoverytable;
 
+    int tabindex=0;
+    int rowindex=0;
+    QWidget *tabRecovery;
+    QWidget *tabRecoverySub;
 
     QWidget *tabStatus;
+    QWidget *tabStatusSub;
+    QTableWidget* table = new QTableWidget();
+    QTableWidgetItem* tableItem = new QTableWidgetItem();
 
-    QWidget *tabBackupSub;
+
     QWidget *tabBackupSub2;
 
 
