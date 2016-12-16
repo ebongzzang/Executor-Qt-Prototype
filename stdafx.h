@@ -34,6 +34,7 @@
 #include <QTableView>
 #include <QTableWidget>
 #include <QTableWidgetItem>
-
+#include <QSystemTrayIcon>
+#include <QCloseEvent>
 #endif // STDAFX_H
 

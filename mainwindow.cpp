@@ -190,7 +190,37 @@ void MainWindow::cratePathDialog()
      * 푸쉬버튼,라인에딧,라벨 등 단순한 것들을 함수화 할 필요가 있어보임(예정)
      *
      */
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    trayIcon = new QSystemTrayIcon(this);
+    QIcon icon("c:\\tray.png");
+    QMenu *trayMenu;
+    QAction *showaction;
+    trayMenu = new QMenu();
 
+    showaction = new QAction(tr("&show"),trayMenu);
+
+    connect(showaction,SIGNAL(triggered(bool)),this,SLOT(show()));
+    trayMenu->addAction(showaction);
+    trayIcon->setIcon(icon);
+    trayIcon->setToolTip("Plan B Tray Icon");
+    trayIcon->show();
+    trayIcon->setContextMenu(trayMenu);
+    this->hide();
+    event->ignore();
+}
+
+/*
+void MainWindow::iconSizenActivated(QSystemTrayIcon::ActivationReason reason)
+ {
+     switch (reason) {
+         case QSystemTrayIcon::Trigger:
+
+
+             // show your menu here
+     }
+ }
+ */
 void MainWindow::on_pushButton_clicked() //사실상의 메인함수
 {
 
@@ -320,9 +350,6 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
     */
 
     recoveryPhase1();
-
-
-
     switch(tabWidget->currentIndex())
     {
         case 0: //tabBackup

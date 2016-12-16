@@ -17,7 +17,9 @@ public:
     void makeNextButton(const char * buttonName, const char * belongWidget);
     void recoveryPhase1();
     void addRowToRecoveryTable(const char * title,const char * path, const char * time);
-    void MainWindow::delRowToRecvoeryTable(const char * title);
+    void delRowToRecvoeryTable(const char * title);
+    void closeEvent(QCloseEvent *event);
+    void iconSizenActivated(QSystemTrayIcon::ActivationReason reason);
     ~MainWindow();
 
 
@@ -87,7 +89,8 @@ private:
 
     QWidget *tabBackupSub2;
 
-
+    QSystemTrayIcon *trayIcon;
+       QMenu *trayIconMenu;
 
 
 
