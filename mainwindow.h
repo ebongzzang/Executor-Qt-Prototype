@@ -19,7 +19,7 @@ public:
     void addRowToRecoveryTable(const char * title,const char * path, const char * time);
     void delRowToRecvoeryTable(const char * title);
     void closeEvent(QCloseEvent *event);
-    void iconSizenActivated(QSystemTrayIcon::ActivationReason reason);
+    void execTrayIcon(void);
     ~MainWindow();
 
 
@@ -89,11 +89,12 @@ private:
 
     QWidget *tabBackupSub2;
 
+    //tray Menu
     QSystemTrayIcon *trayIcon;
-       QMenu *trayIconMenu;
 
-
-
+       QMenu *trayMenu;
+       QAction *showaction;
+       QAction *exitaction;
 
 };
 

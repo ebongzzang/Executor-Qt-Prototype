@@ -125,7 +125,7 @@ void MainWindow::backupPhase2(void)
 
 void MainWindow::addRowToRecoveryTable(const char * title,const char * path, const char * time)
 {
-    for(int i=0; i<4; i++)
+    for(int i=0; i<table->columnCount(); i++)
     {
                      table->setItem(rowindex,0,new QTableWidgetItem(title));
                      table->setItem(rowindex,1,new QTableWidgetItem(path));
@@ -190,37 +190,58 @@ void MainWindow::cratePathDialog()
      * 푸쉬버튼,라인에딧,라벨 등 단순한 것들을 함수화 할 필요가 있어보임(예정)
      *
      */
-void MainWindow::closeEvent(QCloseEvent *event)
+
+void MainWindow::execTrayIcon(void)
 {
+
+
     trayIcon = new QSystemTrayIcon(this);
-    QIcon icon("c:\\tray.png");
-    QMenu *trayMenu;
-    QAction *showaction;
     trayMenu = new QMenu();
+    QIcon icon("c:\\tray.png");
 
-    showaction = new QAction(tr("&show"),trayMenu);
-
-    connect(showaction,SIGNAL(triggered(bool)),this,SLOT(show()));
-    trayMenu->addAction(showaction);
     trayIcon->setIcon(icon);
     trayIcon->setToolTip("Plan B Tray Icon");
-    trayIcon->show();
     trayIcon->setContextMenu(trayMenu);
+
+    trayIcon->show();
     this->hide();
-    event->ignore();
+
+    trayIcon->setIcon(icon);
+    trayIcon->setToolTip("Plan B Tray Icon");
+    trayIcon->setContextMenu(trayMenu);
+
+    showaction = new QAction(tr("&show"),trayMenu);
+    exitaction = new QAction(tr("&exit"),trayMenu);
+
+
+    trayMenu->addAction(showaction);
+    trayMenu->addAction(exitaction);
+
+    connect(showaction,SIGNAL(triggered(bool)),trayIcon,SLOT(hide()));
+    connect(showaction,SIGNAL(triggered(bool)),this,SLOT(show()));
+
+    connect(exitaction,SIGNAL(triggered(bool)),trayIcon,SLOT(hide()));
+    connect(exitaction,SIGNAL(triggered(bool)),this,SLOT(hide()));
+
+
+
+
 }
 
-/*
-void MainWindow::iconSizenActivated(QSystemTrayIcon::ActivationReason reason)
- {
-     switch (reason) {
-         case QSystemTrayIcon::Trigger:
+void MainWindow::closeEvent(QCloseEvent *event) //프로그램을 종료시 처리
+{
+    if(((this->isVisible()) == false) && ((trayIcon->isVisible()) == false))
+    {
+            event->accept();
+    }
+    else
+    {
+        execTrayIcon();
+        event->ignore();
+    }
 
+}
 
-             // show your menu here
-     }
- }
- */
 void MainWindow::on_pushButton_clicked() //사실상의 메인함수
 {
 
