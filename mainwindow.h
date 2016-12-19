@@ -4,7 +4,31 @@
 
 namespace Ui {
 class MainWindow;
+
 }
+
+namespace Indexes {
+enum tabWidgetIndex
+{
+    tabBackup,
+    tabRecovery,
+    tabStatus
+};
+enum tableColumn
+{
+    Title,
+    Path,
+    Time,
+    Select
+};
+/*std::map<tableColumn,std::string> column;
+column[Title] = "Title";
+column[Path] = "Path";
+column[Time]= "Time";
+column[Select] = "Select";
+*/
+}
+
 
 class MainWindow : public QMainWindow
 {
@@ -31,6 +55,7 @@ private slots:
     void backupPhase2();
     void goNextPage(QWidget *currentTab);
     void backBeforePage(QWidget *currentTab);
+    void mapNextBackButton(void);
 
 
 private:
@@ -64,13 +89,11 @@ private:
     QWidget *tabPhase2; //BackupPhase2
         QWidget *tabPhase3; //BackupPhase2
          QWidget *tabPhase4; //BackupPhase2
-         QWidget *tabPhase5; //BackupPhase2
-         QWidget *tabPhase6; //BackupPhase2
+
          QCheckBox *checkBoxBakOnce;
          QCheckBox *checkBoxBakOnce2;
-         QCheckBox *checkBoxBakOnce3;
-         QCheckBox *checkBoxBakOnce4;
-         QCheckBox *checkBoxBakOnce5;
+
+
          QCheckBox *checkBoxBakPerio;
          QPushButton *ButtonBakPerio;
 
@@ -78,6 +101,7 @@ private:
 
     int tabindex=0;
     int rowindex=0;
+
     QWidget *tabRecovery;
     QWidget *tabRecoverySub;
 

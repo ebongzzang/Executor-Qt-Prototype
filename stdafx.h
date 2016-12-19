@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <iostream>
 #include <string.h>
-
+#include <qactiongroup.h>
 #include <QDebug>
 #include <QMainWindow>
 #include <QString>

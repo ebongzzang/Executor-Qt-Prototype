@@ -50,37 +50,40 @@ void MainWindow::popupMsgbox(const char * text)
 
 void MainWindow::goNextPage(QWidget * currentTab)
 {
-         QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
-         if(tabindex <(widgets.count()-1))
-        {
-        widgets.at(tabindex)->hide();
-         widgets.at(tabindex+1)->show();
-        tabindex++;
-                 qDebug()<<tabindex;
-        }
-        else
-         {
-             popupMsgbox("hey!! it's a last page okay?");
-         }
+
+    QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+            if(tabindex <(widgets.count()-1))
+           {
+           widgets.at(tabindex)->hide();
+            widgets.at(tabindex+1)->show();
+           tabindex++;
+                    qDebug()<<tabindex;
+           }
+           else
+            {
+                popupMsgbox("hey!! it's a last page okay?");
+            }
 
 }
+
 
 void MainWindow::backBeforePage(QWidget * currentTab)
 {
     if(tabindex != 0)
-    {
-    QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
+      {
+      QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
 
-   widgets.at(tabindex)->hide();
-    widgets.at(tabindex-1)->show();
-    tabindex--;
-                 qDebug()<<tabindex;
-    }
+     widgets.at(tabindex)->hide();
+      widgets.at(tabindex-1)->show();
+      tabindex--;
+                   qDebug()<<tabindex;
+      }
 
-    else
-    {
-        popupMsgbox("do not click alright?");
-    }
+      else
+      {
+          popupMsgbox("do not click alright?");
+      }
+
 
 }
 
@@ -113,14 +116,6 @@ void MainWindow::backupPhase2(void)
 
     tabPhase3->hide();
 
-    tabPhase4 = new QWidget(tabBackup);
-
-    checkBoxBakOnce3 = new QCheckBox(tabPhase4);
-    checkBoxBakOnce3->setObjectName(QStringLiteral("checkBoxBakOnce"));
-    checkBoxBakOnce3->setGeometry(QRect(340, 20, 161, 31));
-    checkBoxBakOnce3->setText(QApplication::translate("BackupWidget_1", "twice", 0));
-
-    tabPhase4->hide();
 }
 
 void MainWindow::addRowToRecoveryTable(const char * title,const char * path, const char * time)
@@ -134,6 +129,7 @@ void MainWindow::addRowToRecoveryTable(const char * title,const char * path, con
     }
     rowindex++;
 }
+//오버로드 필요할 수도 있음.
 
 void MainWindow::delRowToRecvoeryTable(const char * title)
 {
@@ -226,6 +222,38 @@ void MainWindow::execTrayIcon(void)
 
 
 
+}
+
+void MainWindow::mapNextBackButton(void)
+{
+    qDebug() << tabWidget->currentIndex();
+    switch(tabWidget->currentIndex())
+        {
+            case 0: //tabBackup
+        nextButtonBackup->disconnect(); //이전 시그널을 끊어줘야 함.
+        prevButtonBackup->disconnect();
+         tabindex = 0;
+                connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
+                connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
+                qDebug() << tabWidget->currentIndex() << "hi";
+            break;
+            case 1: //tabRecovery
+         tabindex = 0;
+         nextButtonBackup->disconnect();
+         prevButtonBackup->disconnect();
+                connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabRecovery); });
+                connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabRecovery); });
+                qDebug() << tabWidget->currentIndex() << "hello";
+            break;
+            case 2: //tabStatus
+         tabindex = 0;
+         nextButtonBackup->disconnect();
+         prevButtonBackup->disconnect();
+                connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabStatus); });
+                connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabStatus); });
+                qDebug() << tabWidget->currentIndex() << "good";
+            break;
+        }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) //프로그램을 종료시 처리
@@ -352,7 +380,6 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
     pathLabel_2 = new QLabel(tabBackupSub);
     pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
     pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
-
     backupPhase2();
 
     nextButtonBackup = new QPushButton(BackupWidget_1);
@@ -371,22 +398,10 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
     */
 
     recoveryPhase1();
-    switch(tabWidget->currentIndex())
-    {
-        case 0: //tabBackup
-            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
-            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
-        break;
-        case 1: //tabRecovery
-            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabRecovery); });
-            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabRecovery); });
-        break;
-        case 2: //tabStatus
-            connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabStatus); });
-            connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabStatus); });
-        break;
-    }
 
+    connect(tabWidget,SIGNAL(currentChanged(int)),this,SLOT(mapNextBackButton()));
+
+}
 
     //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
     //글자도 잘림. 우선 나중에 수정하는걸로.
@@ -412,13 +427,11 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
       //      tabWidget->setTabPosition(QTabWidget::West);
          //   QStyleOptionTab opt(*tabbar);
           //  opt.shape = QTabBar::RoundedNorth;
-    }
+
   else
  {
    popupMsgbox("incorrect id or password.");
  }
-
-
 
 }
 
