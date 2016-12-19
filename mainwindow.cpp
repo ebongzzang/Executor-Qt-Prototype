@@ -1,4 +1,3 @@
-
 #include "mainwindow.h"
 #include "stdafx.h"
 //메소드들 페이즈, 기능 별로 분리 필요
@@ -12,6 +11,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+bool MainWindow::loginCheck(QString ID, QString PW)
+{
+
+
+   if((QString::compare(ID,QString::fromStdString(dbID),Qt::CaseSensitive) == 0) && (QString::compare(PW,QString::fromStdString(dbPW),Qt::CaseSensitive)) == 0)
+      {
+       popupMsgbox("Login Success!!");
+       return true;
+      }
+   else
+   {
+    popupMsgbox("incorrect id or password.");
+    return false;
+   }
+
 }
 
 void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath)
@@ -86,7 +101,113 @@ void MainWindow::backBeforePage(QWidget * currentTab)
 
 
 }
+bool MainWindow::backgroundTab(void)
+{
+    BackupWidget_1 = new QWidget(this);
+    BackupWidget_1->resize(850,434);
+    this->setCentralWidget(BackupWidget_1);
 
+    //탭 위젯 추가하기
+         tabWidget = new QTabWidget(BackupWidget_1);
+         tabWidget->setObjectName(QStringLiteral("tabWidget"));
+         tabWidget->setGeometry(QRect(30, 100, 391, 171));
+         tabWidget->resize( 800,300);
+
+         // 탭에 아이콘을 넣는 부분이다. CSS를 사용해서 넣어줌 * 함수화 필요*
+         tabWidget->setStyleSheet(QLatin1String("QTabBar::tab{\n"
+ "    height: 30px;\n"
+ "    width: 120px;\n"
+ "}\n"
+ "\n"
+ "QTabBar::tab:first {\n"
+ "     background: url(c:/backup2.png);\n"
+ "}\n"
+ "\n"
+ "\n"
+ " QTabBar::tab:middle{\n"
+ "   background: url(c:/backup4.png);\n"
+ "}\n"
+ "\n"
+ "QTabBar::tab:first:selected{\n"
+ "     background: url(c:/backup.png);\n"
+ "}\n"
+ "\n"
+ "QTabBar::tab:middle:selected{\n"
+ "     background: url(c:/backup3.png);\n"
+ "}\n"
+ "\n"
+ "QTabBar::tab:last{\n"
+ "     background: url(c:/backup5.png);\n"
+ "}\n"
+ "QTabBar::tab:last:selected{\n"
+ "     background: url(c:/backup6.png);\n"
+ "}\n"
+ "\n"
+ ""));
+         //탭 3개를 만드는 부분이다.
+         tabBackup = new QWidget();
+         tabBackup->setObjectName(QStringLiteral("tabBackup"));
+         tabWidget->addTab(tabBackup, QString());
+
+         tabBackupSub = new QWidget(tabBackup);
+
+         tabRecovery = new QWidget();
+         tabRecovery->setObjectName(QStringLiteral("tabRecovery"));
+         tabWidget->addTab(tabRecovery, QString());
+
+         tabRecoverySub = new QWidget(tabRecovery);
+
+         tabStatus = new QWidget();
+         tabStatus->setObjectName(QStringLiteral("tabStatus"));
+         tabWidget->addTab(tabStatus, QString());
+
+         tabStatusSub = new QWidget(tabStatus);
+
+         return true;
+
+}
+
+bool MainWindow::backupPhase1(void)
+{
+    checkBoxBakSys = new QCheckBox(tabBackupSub);
+     checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
+      checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
+checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
+
+      checkBoxBakVol = new QCheckBox(tabBackupSub);
+      checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
+      checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
+checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
+
+
+      checkBoxBakFile = new QCheckBox(tabBackupSub);
+      checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
+      checkBoxBakFile->setGeometry(QRect(40, 70, 161, 31));
+checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
+
+//
+
+//TreeView를 띄우는 새 창을 만드는 버튼
+
+pathButton = new QPushButton(tabBackupSub);
+pathButton->setObjectName(QStringLiteral("pathButton"));
+pathButton->setGeometry(QRect(700, 135, 47, 23));
+pathButton->setText(QApplication::translate("BackupWidget_1", "click", 0));
+connect(pathButton,SIGNAL(clicked()),this,SLOT(cratePathDialog()));
+
+
+pathLabel_1 = new QLabel(tabBackupSub);
+pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
+pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
+pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
+
+//PATH 그 자체;;
+pathLabel_2 = new QLabel(tabBackupSub);
+pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
+pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
+
+return true;
+}
 
 void MainWindow::backupPhase2(void)
 {
@@ -272,115 +393,26 @@ void MainWindow::closeEvent(QCloseEvent *event) //프로그램을 종료시 처�
 
 void MainWindow::on_pushButton_clicked() //사실상의 메인함수
 {
+    QString enteredID = ui->lineEdit->text();
+    QString enteredPW = ui->lineEdit_2->text();
 
-  QString enteredID = ui->lineEdit->text();
-  QString enteredPW = ui->lineEdit_2->text();
-
- if((QString::compare(enteredID,QString::fromStdString(dbID),Qt::CaseSensitive) == 0) && (QString::compare(enteredPW,QString::fromStdString(dbPW),Qt::CaseSensitive)) == 0)
+    if(loginCheck(enteredID,enteredPW))
     {
-     popupMsgbox("Login Success!!");
-     ui->centralWidget->hide();
-     //다음 창으로
+        ui->centralWidget->hide();
+    }
+    else
+    {
+        while(true)
+        {
 
-     BackupWidget_1 = new QWidget(this);
-     BackupWidget_1->resize(850,434);
-     this->setCentralWidget(BackupWidget_1);
+         loginCheck(enteredID,enteredPW);
+        }
+    }
 
-     //탭 위젯 추가하기
-          tabWidget = new QTabWidget(BackupWidget_1);
-          tabWidget->setObjectName(QStringLiteral("tabWidget"));
-          tabWidget->setGeometry(QRect(30, 100, 391, 171));
-          tabWidget->resize( 800,300);
-
-          // 탭에 아이콘을 넣는 부분이다. CSS를 사용해서 넣어줌 * 함수화 필요*
-          tabWidget->setStyleSheet(QLatin1String("QTabBar::tab{\n"
-  "    height: 30px;\n"
-  "    width: 120px;\n"
-  "}\n"
-  "\n"
-  "QTabBar::tab:first {\n"
-  "     background: url(c:/backup2.png);\n"
-  "}\n"
-  "\n"
-  "\n"
-  " QTabBar::tab:middle{\n"
-  "   background: url(c:/backup4.png);\n"
-  "}\n"
-  "\n"
-  "QTabBar::tab:first:selected{\n"
-  "     background: url(c:/backup.png);\n"
-  "}\n"
-  "\n"
-  "QTabBar::tab:middle:selected{\n"
-  "     background: url(c:/backup3.png);\n"
-  "}\n"
-  "\n"
-  "QTabBar::tab:last{\n"
-  "     background: url(c:/backup5.png);\n"
-  "}\n"
-  "QTabBar::tab:last:selected{\n"
-  "     background: url(c:/backup6.png);\n"
-  "}\n"
-  "\n"
-  ""));
-          //탭 3개를 만드는 부분이다.
-          tabBackup = new QWidget();
-          tabBackup->setObjectName(QStringLiteral("tabBackup"));
-          tabWidget->addTab(tabBackup, QString());
-
-          tabBackupSub = new QWidget(tabBackup);
-
-          tabRecovery = new QWidget();
-          tabRecovery->setObjectName(QStringLiteral("tabRecovery"));
-          tabWidget->addTab(tabRecovery, QString());
-
-          tabRecoverySub = new QWidget(tabRecovery);
-
-          tabStatus = new QWidget();
-          tabStatus->setObjectName(QStringLiteral("tabStatus"));
-          tabWidget->addTab(tabStatus, QString());
-
-          tabStatusSub = new QWidget(tabStatus);
-
-          //탭 1에 체크박스와 트리뷰를 넣어주는 부분이다.
-
-        checkBoxBakSys = new QCheckBox(tabBackupSub);
-         checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
-          checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
-    checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
-
-          checkBoxBakVol = new QCheckBox(tabBackupSub);
-          checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
-          checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
-    checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
-
-
-          checkBoxBakFile = new QCheckBox(tabBackupSub);
-          checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
-          checkBoxBakFile->setGeometry(QRect(40, 70, 161, 31));
-    checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
-
-    //
-
-    //TreeView를 띄우는 새 창을 만드는 버튼
-
-    pathButton = new QPushButton(tabBackupSub);
-    pathButton->setObjectName(QStringLiteral("pathButton"));
-    pathButton->setGeometry(QRect(700, 135, 47, 23));
-    pathButton->setText(QApplication::translate("BackupWidget_1", "click", 0));
-    connect(pathButton,SIGNAL(clicked()),this,SLOT(cratePathDialog()));
-
-
-    pathLabel_1 = new QLabel(tabBackupSub);
-    pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
-    pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
-    pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
-
-    //PATH 그 자체;;
-    pathLabel_2 = new QLabel(tabBackupSub);
-    pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
-    pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
+   backgroundTab();
+    backupPhase1();
     backupPhase2();
+    recoveryPhase1();
 
     nextButtonBackup = new QPushButton(BackupWidget_1);
     nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
@@ -391,13 +423,13 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
     prevButtonBackup = new QPushButton(BackupWidget_1);
     prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
     prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
-    prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0));
+    prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_mainwindow.h 헤더 꺼내기
     /*
      * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
      *
     */
 
-    recoveryPhase1();
+
 
     connect(tabWidget,SIGNAL(currentChanged(int)),this,SLOT(mapNextBackButton()));
 
@@ -427,11 +459,3 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
       //      tabWidget->setTabPosition(QTabWidget::West);
          //   QStyleOptionTab opt(*tabbar);
           //  opt.shape = QTabBar::RoundedNorth;
-
-  else
- {
-   popupMsgbox("incorrect id or password.");
- }
-
-}
-

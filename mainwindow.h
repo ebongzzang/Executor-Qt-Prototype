@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "stdafx.h"
-
+#include "ui_mainwindow.h"
 namespace Ui {
 class MainWindow;
 
@@ -36,6 +36,8 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    bool backgroundTab(void);
+    bool backupPhase1(void);
     void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
@@ -44,6 +46,7 @@ public:
     void delRowToRecvoeryTable(const char * title);
     void closeEvent(QCloseEvent *event);
     void execTrayIcon(void);
+    bool loginCheck(QString id, QString PW);
     ~MainWindow();
 
 

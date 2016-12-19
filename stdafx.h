@@ -1,12 +1,12 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 #include "stdafx.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+
 #include <windows.h>
 #include <iostream>
 #include <string.h>
-#include <qactiongroup.h>
+
+#include <QButtonGroup>
 #include <QDebug>
 #include <QMainWindow>
 #include <QString>
