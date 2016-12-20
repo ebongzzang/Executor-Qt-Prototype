@@ -1,9 +1,9 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PlanBUIClass_H
+#define PlanBUIClass_H
 #include "stdafx.h"
 #include "ui_mainwindow.h"
 namespace Ui {
-class MainWindow;
+class PlanBUIClass;
 
 }
 
@@ -21,6 +21,15 @@ enum tableColumn
     Time,
     Select
 };
+enum backupType
+{
+    NOTFOUND=-1,
+    SYSTEM=-2,
+    VOLUME=-3,
+    FILE=-4
+
+};
+
 /*std::map<tableColumn,std::string> column;
 column[Title] = "Title";
 column[Path] = "Path";
@@ -30,16 +39,16 @@ column[Select] = "Select";
 }
 
 
-class MainWindow : public QMainWindow
+class PlanBUIClass : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit PlanBUIClass(QWidget *parent = 0);
     bool backgroundTab(void);
     bool backupPhase1(void);
     void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath);
-
+    int getValueFromCheckbox(QButtonGroup *buttonGroup);
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
     void recoveryPhase1();
@@ -48,7 +57,7 @@ public:
     void closeEvent(QCloseEvent *event);
     void execTrayIcon(void);
     bool loginCheck(QString id, QString PW);
-    ~MainWindow();
+    ~PlanBUIClass();
 
 
 private slots:
@@ -63,7 +72,7 @@ private slots:
 
 
 private:
-    Ui::MainWindow *ui;
+    Ui::PlanBUIClass *ui;
     QFileSystemModel *dirmodel;
     QStandardItemModel *model;
 
@@ -76,35 +85,26 @@ private:
     //추가 되는 탭들
     QWidget *tabBackup; //BackupPhase1
         QWidget *tabBackupSub;
-        QLabel *pathLabel_1;
-         QLabel *pathLabel_2;
          QPushButton *pathButton;
-         QCheckBox *checkBoxBakSys ;
-         QCheckBox *checkBoxBakVol;
-         QCheckBox *checkBoxBakFile;
+
 
          QPushButton *nextButtonBackup;
          QPushButton *prevButtonBackup;
-         QPushButton *buttonDiaPath;
+
          QDialog *treeDialog;
             QTreeView *treeView;
             QString absPath;
 
-    QWidget *tabPhase2; //BackupPhase2
-        QWidget *tabPhase3; //BackupPhase2
-         QWidget *tabPhase4; //BackupPhase2
+        QLabel* pathLabel_2;
 
-         QCheckBox *checkBoxBakOnce;
-         QCheckBox *checkBoxBakOnce2;
+        QWidget *tabPhase2; //BackupPhase2
 
-
-         QCheckBox *checkBoxBakPerio;
          QPushButton *ButtonBakPerio;
-
          QTableView *recoverytable;
 
     int tabindex=0;
     int rowindex=0;
+    int checkedvalue;
 
     QWidget *tabRecovery;
     QWidget *tabRecoverySub;
@@ -126,4 +126,4 @@ private:
 
 };
 
-#endif // MAINWINDOW_H
+#endif // PlanBUIClass_H
