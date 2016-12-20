@@ -166,7 +166,11 @@ bool PlanBUIClass::backgroundTab(void)
 }
 int PlanBUIClass::getValueFromCheckbox(QButtonGroup * buttonGroup)
 {
+<<<<<<< HEAD
     int num=0;
+=======
+    int num;
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
     connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked),this,[=](int num)->int{num = buttonGroup->checkedId(); qDebug() << num; return num;});
     return num;
 }
@@ -174,17 +178,31 @@ int PlanBUIClass::getValueFromCheckbox(QButtonGroup * buttonGroup)
 bool PlanBUIClass::backupPhase1(void)
 {
    QButtonGroup * checkBoxBakGroup = new QButtonGroup(tabBackupSub);
+<<<<<<< HEAD
 
      QCheckBox * checkBoxBakSys = new QCheckBox(tabBackupSub);
     checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
     checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
     checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
+=======
+
+    QCheckBox * checkBoxBakSys = new QCheckBox(tabBackupSub);
+     checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
+      checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
+      checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
+
+     QCheckBox * checkBoxBakVol = new QCheckBox(tabBackupSub);
+      checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
+      checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
+    checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
     QCheckBox * checkBoxBakVol = new QCheckBox(tabBackupSub);
     checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
     checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
     checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
 
+<<<<<<< HEAD
 
     QCheckBox  * checkBoxBakFile = new QCheckBox(tabBackupSub);
     checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
@@ -194,6 +212,18 @@ bool PlanBUIClass::backupPhase1(void)
     checkBoxBakGroup->addButton(checkBoxBakSys);
     checkBoxBakGroup->addButton(checkBoxBakVol);
     checkBoxBakGroup->addButton(checkBoxBakFile);
+=======
+    QCheckBox  * checkBoxBakFile = new QCheckBox(tabBackupSub);
+      checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
+      checkBoxBakFile->setGeometry(QRect(40, 70, 161, 31));
+    checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
+
+    checkBoxBakGroup->addButton(checkBoxBakSys);
+    checkBoxBakGroup->addButton(checkBoxBakVol);
+    checkBoxBakGroup->addButton(checkBoxBakFile);
+
+    checkedvalue = getValueFromCheckbox(checkBoxBakGroup); // 백업 종류를 리턴
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
     backupType = getValueFromCheckbox(checkBoxBakGroup); // 백업 종류를 리턴
 
@@ -203,11 +233,18 @@ bool PlanBUIClass::backupPhase1(void)
     pathButton->setText(QApplication::translate("BackupWidget_1", "click", 0));
     connect(pathButton,SIGNAL(clicked()),this,SLOT(cratePathDialog()));
 
+<<<<<<< HEAD
 
     QLabel * pathLabel_1 = new QLabel(tabBackupSub);
     pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
     pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
     pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
+=======
+QLabel * pathLabel_1 = new QLabel(tabBackupSub);
+pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
+pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
+pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
 //PATH 그 자체;;
     pathLabel_2 = new QLabel(tabBackupSub);
@@ -225,14 +262,34 @@ else
 }
 
 
+<<<<<<< HEAD
 }
 
 bool PlanBUIClass::backupPhase2(void)
+=======
+
+if(checkedvalue == Indexes::NOTFOUND)
+{
+    return false;
+}
+else
+{
+    return true;
+}
+
+
+}
+
+void PlanBUIClass::backupPhase2(void)
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 {
 
     tabPhase2 = new QWidget(tabBackup);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
     QCheckBox * checkBoxBakOnce = new QCheckBox(tabPhase2);
     checkBoxBakOnce->setObjectName(QStringLiteral("checkBoxBakOnce"));
     checkBoxBakOnce->setGeometry(QRect(40, 10, 161, 31));
@@ -256,6 +313,7 @@ bool PlanBUIClass::backupPhase2(void)
     ButtonBakPerio->setText(QApplication::translate("BackupWidget_1", "Setup Period", 0));
     tabPhase2->hide();
 
+<<<<<<< HEAD
     if(backupPeriod == Indexes::NOTFOUND)
     {
         return false;
@@ -268,6 +326,13 @@ bool PlanBUIClass::backupPhase2(void)
 }
 
 void PlanBUIClass::addRowToRecoveryTable(QTableWidget *tableWidget,const char * title,const char * path, const char * time)
+=======
+
+
+}
+
+void PlanBUIClass::addRowToRecoveryTable(const char * title,const char * path, const char * time)
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 {
 
                      tableWidget->setItem(rowindex,Indexes::Title,new QTableWidgetItem(title));
@@ -453,7 +518,11 @@ void PlanBUIClass::on_pushButton_clicked() //사실상의 메인함수
         prevButtonBackup = new QPushButton(BackupWidget_1);
         prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
         prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
+<<<<<<< HEAD
         prevButtonBackup->setText(QApplication::translate("BackupWidget_1" , "PREV", 0));
+=======
+        prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_PlanBUIClass.h 헤더 꺼내기
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
         /*
          * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
          *

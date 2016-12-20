@@ -29,12 +29,15 @@ enum backupType
     FILE=-4
 
 };
+<<<<<<< HEAD
 enum backupPeriod
 {
     ONCE=-2,
     Periodic=-3
 };
 
+=======
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
 /*std::map<tableColumn,std::string> column;
 column[Title] = "Title";
@@ -102,17 +105,27 @@ private:
             QString absPath;
 
         QLabel* pathLabel_2;
+<<<<<<< HEAD
 
         QWidget *tabPhase2; //BackupPhase2
 
+=======
+
+        QWidget *tabPhase2; //BackupPhase2
+
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
          QPushButton *ButtonBakPerio;
          QTableView *recoverytable;
 
     int tabindex=0;
     int rowindex=0;
+<<<<<<< HEAD
     int backupType;
     int backupPeriod;
     int recoverRow;
+=======
+    int checkedvalue;
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
     QWidget *tabRecovery;
     QWidget *tabRecoverySub;

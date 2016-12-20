@@ -1,7 +1,11 @@
 #ifndef UI_PlanBUIClass_H
 #define UI_PlanBUIClass_H
 
+<<<<<<< HEAD
 #include "stdafx.h"
+=======
+#include "stdafx.h";
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
 QT_BEGIN_NAMESPACE
 
@@ -12,6 +16,11 @@ public:
     QAction *actionSfsdfsdfsdf;
 
     QWidget *centralWidget;
+<<<<<<< HEAD
+=======
+    QLabel *label;
+    QLabel *label_2;
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
     QPushButton *pushButton;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
@@ -37,6 +46,7 @@ public:
         QLabel * label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(50, 40, 47, 13));
+<<<<<<< HEAD
         QLabel * label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(30, 70, 47, 13));
@@ -44,6 +54,12 @@ public:
         label->setText(QApplication::translate("PlanBUIClass", "id", 0));
         label_2->setText(QApplication::translate("PlanBUIClass", "password", 0));
 
+=======
+        QLabel label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(30, 70, 47, 13));
+
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(300, 50, 75, 23));
@@ -67,6 +83,10 @@ public:
 
         menuHelp = new QMenu(menuBar);
         menuHelp->setObjectName(QStringLiteral("menuHelp"));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
         PlanBUIClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(PlanBUIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -95,6 +115,11 @@ public:
     {
         PlanBUIClass->setWindowTitle(QApplication::translate("PlanBUIClass", "PlanBUIClass", 0));
         actionSfsdfsdfsdf->setText(QApplication::translate("PlanBUIClass", "sfsdfsdfsdf", 0));
+<<<<<<< HEAD
+=======
+        label->setText(QApplication::translate("PlanBUIClass", "id", 0));
+        label_2->setText(QApplication::translate("PlanBUIClass", "password", 0));
+>>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
         pushButton->setText(QApplication::translate("PlanBUIClass", "PushButton", 0));
         menuSetup->setTitle(QApplication::translate("PlanBUIClass", "Setup", 0));
         menuHelp->setTitle(QApplication::translate("PlanBUIClass", "Help", 0));
