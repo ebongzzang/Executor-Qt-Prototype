@@ -18,26 +18,24 @@ bool MainWindow::loginCheck(QString ID, QString PW)
 
    if((QString::compare(ID,QString::fromStdString(dbID),Qt::CaseSensitive) == 0) && (QString::compare(PW,QString::fromStdString(dbPW),Qt::CaseSensitive)) == 0)
       {
-       popupMsgbox("Login Success!!");
        return true;
       }
    else
    {
-    popupMsgbox("incorrect id or password.");
     return false;
    }
 
 }
 
-void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath)
+void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath)
 {
    dirmodel = new QFileSystemModel(widget);
    dirmodel->setRootPath(QString::fromStdString(sPath));
-   treepath->setModel(dirmodel);
+   treePath->setModel(dirmodel);
    dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
 }
 
-void MainWindow::getPathFromTree(void)
+void MainWindow::getPathFromTree()
 //주어진 Tree로 부터 경로를 얻는다. * 인자 받는 수정 필요 *
 {
     QModelIndexList list =  treeView->selectionModel()->selectedIndexes();
@@ -285,20 +283,20 @@ void MainWindow::cratePathDialog()
     treeView->setObjectName(QStringLiteral("treeView"));
     treeView->setGeometry(QRect(30, 100, 256, 192));
     MainWindow::viewFilelist("C:/",treeDialog,treeView);
-    MainWindow::getPathFromTree();
+  //  MainWindow::getPathFromTree();
 
     buttonDiaPath = new QPushButton(treeDialog);
     buttonDiaPath->setObjectName(QStringLiteral("buttonDiaPath"));
     buttonDiaPath->setGeometry(QRect(100, 340, 75, 23));
     buttonDiaPath->setText(QApplication::translate("treeDialog", "click", 0));
 
-
-     connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(getPathFromTree()));
+     connect(treeView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this,SLOT(getPathFromTree()));
      //사용자가 클릭하는 트리 값 받아오기
 
      connect(buttonDiaPath,SIGNAL(clicked(bool)),this,SLOT(convertPathToLabel()));
      //ok 누르면 다이얼로그 종료
 
+     connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
 
      treeDialog->exec();
 }
@@ -398,40 +396,45 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
 
     if(loginCheck(enteredID,enteredPW))
     {
+        popupMsgbox("Login Success!!");
         ui->centralWidget->hide();
+
+        backgroundTab();
+
+        backupPhase1();
+
+        backupPhase2();
+
+        recoveryPhase1();
+
+        nextButtonBackup = new QPushButton(BackupWidget_1);
+        nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
+        nextButtonBackup->setGeometry(QRect(650, 500, 80, 40));
+        nextButtonBackup->setText(QApplication::translate("BackupWidget_1", "NEXT", 0));
+
+
+        prevButtonBackup = new QPushButton(BackupWidget_1);
+        prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
+        prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
+        prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_mainwindow.h 헤더 꺼내기
+        /*
+         * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
+         *
+        */
+
+
+
+        connect(tabWidget,SIGNAL(currentChanged(int)),this,SLOT(mapNextBackButton()));
     }
     else
     {
-        while(true)
-        {
-
-         loginCheck(enteredID,enteredPW);
-        }
+        popupMsgbox("incorrect id or password.");
     }
 
-   backgroundTab();
-    backupPhase1();
-    backupPhase2();
-    recoveryPhase1();
-
-    nextButtonBackup = new QPushButton(BackupWidget_1);
-    nextButtonBackup->setObjectName(QStringLiteral("nextButtonBackup"));
-    nextButtonBackup->setGeometry(QRect(650, 500, 80, 40));
-    nextButtonBackup->setText(QApplication::translate("BackupWidget_1", "NEXT", 0));
-
-
-    prevButtonBackup = new QPushButton(BackupWidget_1);
-    prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
-    prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
-    prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_mainwindow.h 헤더 꺼내기
-    /*
-     * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
-     *
-    */
 
 
 
-    connect(tabWidget,SIGNAL(currentChanged(int)),this,SLOT(mapNextBackButton()));
+
 
 }
 

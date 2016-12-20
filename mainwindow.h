@@ -38,7 +38,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     bool backgroundTab(void);
     bool backupPhase1(void);
-    void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treepath);
+    void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath);
+
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
     void recoveryPhase1();
@@ -52,7 +53,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void getPathFromTree();
+    void getPathFromTree(); //정해진 트리뷰를 써야함. (람다로 수정 가능)
     void cratePathDialog();
     void convertPathToLabel();
     void backupPhase2();
