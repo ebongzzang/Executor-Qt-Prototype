@@ -1,18 +1,18 @@
 #include "mainwindow.h"
 #include "stdafx.h"
 //메소드들 페이즈, 기능 별로 분리 필요
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+PlanBUIClass::PlanBUIClass(QWidget *parent) :
+    QMainWindow (parent),
+    ui(new Ui::PlanBUIClass)
 {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
+PlanBUIClass::~PlanBUIClass()
 {
     delete ui;
 }
-bool MainWindow::loginCheck(QString ID, QString PW)
+bool PlanBUIClass::loginCheck(QString ID, QString PW)
 {
 
 
@@ -27,7 +27,7 @@ bool MainWindow::loginCheck(QString ID, QString PW)
 
 }
 
-void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath)
+void PlanBUIClass::viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath)
 {
    dirmodel = new QFileSystemModel(widget);
    dirmodel->setRootPath(QString::fromStdString(sPath));
@@ -35,7 +35,7 @@ void MainWindow::viewFilelist(std::string sPath, QWidget * widget, QTreeView *tr
    dirmodel->setFilter(QDir::NoDotAndDotDot | QDir::AllDirs);
 }
 
-void MainWindow::getPathFromTree()
+void PlanBUIClass::getPathFromTree()
 //주어진 Tree로 부터 경로를 얻는다. * 인자 받는 수정 필요 *
 {
     QModelIndexList list =  treeView->selectionModel()->selectedIndexes();
@@ -46,13 +46,13 @@ void MainWindow::getPathFromTree()
     }
 }
 
-void MainWindow::convertPathToLabel()
+void PlanBUIClass::convertPathToLabel()
 {
     pathLabel_2->setText(QApplication::translate("BackupWidget_1",absPath.toUtf8().constData(), 0));
     treeDialog->close();
 }
 
-void MainWindow::popupMsgbox(const char * text)
+void PlanBUIClass::popupMsgbox(const char * text)
 {
     QMessageBox msgBox;
     msgBox.setText(text);
@@ -61,7 +61,7 @@ void MainWindow::popupMsgbox(const char * text)
 }
 
 
-void MainWindow::goNextPage(QWidget * currentTab)
+void PlanBUIClass::goNextPage(QWidget * currentTab)
 {
 
     QList<QWidget *> widgets = currentTab->findChildren<QWidget*>(QString(),Qt::FindDirectChildrenOnly);
@@ -80,7 +80,7 @@ void MainWindow::goNextPage(QWidget * currentTab)
 }
 
 
-void MainWindow::backBeforePage(QWidget * currentTab)
+void PlanBUIClass::backBeforePage(QWidget * currentTab)
 {
     if(tabindex != 0)
       {
@@ -99,7 +99,7 @@ void MainWindow::backBeforePage(QWidget * currentTab)
 
 
 }
-bool MainWindow::backgroundTab(void)
+bool PlanBUIClass::backgroundTab(void)
 {
     BackupWidget_1 = new QWidget(this);
     BackupWidget_1->resize(850,434);
@@ -164,28 +164,38 @@ bool MainWindow::backgroundTab(void)
          return true;
 
 }
-
-bool MainWindow::backupPhase1(void)
+int PlanBUIClass::getValueFromCheckbox(QButtonGroup * buttonGroup)
 {
-    checkBoxBakSys = new QCheckBox(tabBackupSub);
+    int num;
+    connect(buttonGroup, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked),this,[=](int num)->int{num = buttonGroup->checkedId(); qDebug() << num; return num;});
+    return num;
+}
+
+bool PlanBUIClass::backupPhase1(void)
+{
+   QButtonGroup * checkBoxBakGroup = new QButtonGroup(tabBackupSub);
+
+    QCheckBox * checkBoxBakSys = new QCheckBox(tabBackupSub);
      checkBoxBakSys->setObjectName(QStringLiteral("checkBoxBakSys"));
       checkBoxBakSys->setGeometry(QRect(40, 10, 161, 31));
-checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
+      checkBoxBakSys->setText(QApplication::translate("BackupWidget_1", "System Backup", 0));
 
-      checkBoxBakVol = new QCheckBox(tabBackupSub);
+     QCheckBox * checkBoxBakVol = new QCheckBox(tabBackupSub);
       checkBoxBakVol->setObjectName(QStringLiteral("checkBoxBakVol"));
       checkBoxBakVol->setGeometry(QRect(40, 40, 161, 31));
-checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
+    checkBoxBakVol->setText(QApplication::translate("BackupWidget_1", "Volume Backup", 0));
 
 
-      checkBoxBakFile = new QCheckBox(tabBackupSub);
+    QCheckBox  * checkBoxBakFile = new QCheckBox(tabBackupSub);
       checkBoxBakFile->setObjectName(QStringLiteral("checkBoxBakFile"));
       checkBoxBakFile->setGeometry(QRect(40, 70, 161, 31));
-checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
+    checkBoxBakFile->setText(QApplication::translate("BackupWidget_1", "File Backup", 0));
 
-//
+    checkBoxBakGroup->addButton(checkBoxBakSys);
+    checkBoxBakGroup->addButton(checkBoxBakVol);
+    checkBoxBakGroup->addButton(checkBoxBakFile);
 
-//TreeView를 띄우는 새 창을 만드는 버튼
+    checkedvalue = getValueFromCheckbox(checkBoxBakGroup); // 백업 종류를 리턴
 
 pathButton = new QPushButton(tabBackupSub);
 pathButton->setObjectName(QStringLiteral("pathButton"));
@@ -194,7 +204,7 @@ pathButton->setText(QApplication::translate("BackupWidget_1", "click", 0));
 connect(pathButton,SIGNAL(clicked()),this,SLOT(cratePathDialog()));
 
 
-pathLabel_1 = new QLabel(tabBackupSub);
+QLabel * pathLabel_1 = new QLabel(tabBackupSub);
 pathLabel_1->setObjectName(QStringLiteral("pathLabel_1"));
 pathLabel_1->setGeometry(QRect(40, 140, 47, 13));
 pathLabel_1->setText(QApplication::translate("BackupWidget_1","PATH", 0));
@@ -204,19 +214,30 @@ pathLabel_2 = new QLabel(tabBackupSub);
 pathLabel_2->setObjectName(QStringLiteral("pathLabel_2"));
 pathLabel_2->setGeometry(QRect(120, 95, 540, 103)); // X,Y,width,height
 
-return true;
+
+if(checkedvalue == Indexes::NOTFOUND)
+{
+    return false;
+}
+else
+{
+    return true;
 }
 
-void MainWindow::backupPhase2(void)
+
+}
+
+void PlanBUIClass::backupPhase2(void)
 {
+
     tabPhase2 = new QWidget(tabBackup);
 
-    checkBoxBakOnce = new QCheckBox(tabPhase2);
+    QCheckBox * checkBoxBakOnce = new QCheckBox(tabPhase2);
     checkBoxBakOnce->setObjectName(QStringLiteral("checkBoxBakOnce"));
     checkBoxBakOnce->setGeometry(QRect(40, 10, 161, 31));
     checkBoxBakOnce->setText(QApplication::translate("BackupWidget_1", "Once", 0));
 
-    checkBoxBakPerio = new QCheckBox(tabPhase2);
+    QCheckBox * checkBoxBakPerio = new QCheckBox(tabPhase2);
     checkBoxBakPerio->setObjectName(QStringLiteral("checkBoxBakPerio"));
     checkBoxBakPerio->setGeometry(QRect(40, 40, 161, 31));
     checkBoxBakPerio->setText(QApplication::translate("BackupWidget_1", "Periodic", 0));
@@ -227,17 +248,11 @@ void MainWindow::backupPhase2(void)
     ButtonBakPerio->setText(QApplication::translate("BackupWidget_1", "Setup Period", 0));
     tabPhase2->hide();
 
-   tabPhase3 = new QWidget(tabBackup);
-    checkBoxBakOnce2 = new QCheckBox(tabPhase3);
-    checkBoxBakOnce2->setObjectName(QStringLiteral("checkBoxBakOnce"));
-    checkBoxBakOnce2->setGeometry(QRect(140, 20, 161, 31));
-    checkBoxBakOnce2->setText(QApplication::translate("BackupWidget_1", "Once", 0));
 
-    tabPhase3->hide();
 
 }
 
-void MainWindow::addRowToRecoveryTable(const char * title,const char * path, const char * time)
+void PlanBUIClass::addRowToRecoveryTable(const char * title,const char * path, const char * time)
 {
     for(int i=0; i<table->columnCount(); i++)
     {
@@ -250,14 +265,14 @@ void MainWindow::addRowToRecoveryTable(const char * title,const char * path, con
 }
 //오버로드 필요할 수도 있음.
 
-void MainWindow::delRowToRecvoeryTable(const char * title)
+void PlanBUIClass::delRowToRecvoeryTable(const char * title)
 {
     QList<QTableWidgetItem *> list = table->findItems(title,Qt::MatchExactly);
     table->removeRow(list.at(0)->row());
 }
 
 
-void MainWindow::recoveryPhase1(void)
+void PlanBUIClass::recoveryPhase1(void)
 {
     table = new QTableWidget(tabRecoverySub);
     table->resize(700,200);
@@ -276,16 +291,16 @@ void MainWindow::recoveryPhase1(void)
 
 
  //트리를 띄울 Dialog를 만든다.
-void MainWindow::cratePathDialog()
+void PlanBUIClass::cratePathDialog()
 {
     treeDialog = new QDialog();
     treeView = new QTreeView(treeDialog);
     treeView->setObjectName(QStringLiteral("treeView"));
     treeView->setGeometry(QRect(30, 100, 256, 192));
-    MainWindow::viewFilelist("C:/",treeDialog,treeView);
-  //  MainWindow::getPathFromTree();
+    PlanBUIClass::viewFilelist("C:/",treeDialog,treeView);
+  //  PlanBUIClass::getPathFromTree();
 
-    buttonDiaPath = new QPushButton(treeDialog);
+    QPushButton * buttonDiaPath = new QPushButton(treeDialog);
     buttonDiaPath->setObjectName(QStringLiteral("buttonDiaPath"));
     buttonDiaPath->setGeometry(QRect(100, 340, 75, 23));
     buttonDiaPath->setText(QApplication::translate("treeDialog", "click", 0));
@@ -296,8 +311,6 @@ void MainWindow::cratePathDialog()
      connect(buttonDiaPath,SIGNAL(clicked(bool)),this,SLOT(convertPathToLabel()));
      //ok 누르면 다이얼로그 종료
 
-     connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
-
      treeDialog->exec();
 }
 
@@ -306,7 +319,7 @@ void MainWindow::cratePathDialog()
      *
      */
 
-void MainWindow::execTrayIcon(void)
+void PlanBUIClass::execTrayIcon(void)
 {
 
 
@@ -343,7 +356,7 @@ void MainWindow::execTrayIcon(void)
 
 }
 
-void MainWindow::mapNextBackButton(void)
+void PlanBUIClass::mapNextBackButton(void)
 {
     qDebug() << tabWidget->currentIndex();
     switch(tabWidget->currentIndex())
@@ -375,7 +388,7 @@ void MainWindow::mapNextBackButton(void)
         }
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) //프로그램을 종료시 처리
+void PlanBUIClass::closeEvent(QCloseEvent *event) //프로그램을 종료시 처리
 {
     if(((this->isVisible()) == false) && ((trayIcon->isVisible()) == false))
     {
@@ -389,7 +402,7 @@ void MainWindow::closeEvent(QCloseEvent *event) //프로그램을 종료시 처�
 
 }
 
-void MainWindow::on_pushButton_clicked() //사실상의 메인함수
+void PlanBUIClass::on_pushButton_clicked() //사실상의 메인함수
 {
     QString enteredID = ui->lineEdit->text();
     QString enteredPW = ui->lineEdit_2->text();
@@ -416,13 +429,14 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
         prevButtonBackup = new QPushButton(BackupWidget_1);
         prevButtonBackup->setObjectName(QStringLiteral("prevButtonBackup"));
         prevButtonBackup->setGeometry(QRect(550, 500, 80, 40));
-        prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_mainwindow.h 헤더 꺼내기
+        prevButtonBackup->setText(QApplication::translate("BackupWidget_1", "PREV", 0)); //ui_PlanBUIClass.h 헤더 꺼내기
         /*
          * 탭 위젯 바깥에 만들지, 아니면 탭 위젯 안에 만들어 메소드화 한 뒤 관리할건지 필요함.
          *
         */
 
-
+        connect(nextButtonBackup,&QPushButton::clicked,this,[this]{goNextPage(tabBackup); });
+        connect(prevButtonBackup,&QPushButton::clicked,this,[this]{backBeforePage(tabBackup); });
 
         connect(tabWidget,SIGNAL(currentChanged(int)),this,SLOT(mapNextBackButton()));
     }
@@ -432,33 +446,4 @@ void MainWindow::on_pushButton_clicked() //사실상의 메인함수
     }
 
 
-
-
-
-
 }
-
-    //실제 PATH 를 띄우는 경로. 사용자가 직접 입력 할 수 있도록 수정이 필요해 보인다.
-    //글자도 잘림. 우선 나중에 수정하는걸로.
-
-
-
-
-
-
-
-
-
-  //        label_2->setText(QApplication::translate("MainWindow", "password", 0));
-
-
-
-      //글씨 넣기
-     //     tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "yeah", 0));
-           //  tabWidget->setTabIcon(tabWidget->indexOf(tab),icon);
-           // tabWidget->setIconSize(pix.size());
-          //이미지 넣기
-
-      //      tabWidget->setTabPosition(QTabWidget::West);
-         //   QStyleOptionTab opt(*tabbar);
-          //  opt.shape = QTabBar::RoundedNorth;

@@ -5,10 +5,8 @@
 #include <windows.h>
 #include <iostream>
 #include <string.h>
-
-#include <QButtonGroup>
 #include <QDebug>
-#include <QMainWindow>
+#include <QButtonGroup>
 #include <QString>
 #include <QMessageBox>
 #include <QFileSystemModel>
@@ -29,12 +27,14 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
-#include "PathWidget.h"
+#include <QtCore/QVariant>
+
 #include <QStandardItemModel>
 #include <QTableView>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QSystemTrayIcon>
 #include <QCloseEvent>
+
 #endif // STDAFX_H
 
