@@ -29,6 +29,12 @@ enum backupType
     FILE=-4
 
 };
+enum backupPeriod
+{
+    ONCE=-2,
+    Periodic=-3
+};
+
 
 /*std::map<tableColumn,std::string> column;
 column[Title] = "Title";
@@ -52,7 +58,7 @@ public:
     void popupMsgbox(const char * text);
     void makeNextButton(const char * buttonName, const char * belongWidget);
     void recoveryPhase1();
-    void addRowToRecoveryTable(const char * title,const char * path, const char * time);
+    void addRowToRecoveryTable(QTableWidget *tableWidget,const char * title,const char * path, const char * time);
     void delRowToRecvoeryTable(const char * title);
     void closeEvent(QCloseEvent *event);
     void execTrayIcon(void);
@@ -65,7 +71,7 @@ private slots:
     void getPathFromTree(); //정해진 트리뷰를 써야함. (람다로 수정 가능)
     void cratePathDialog();
     void convertPathToLabel();
-    void backupPhase2();
+    bool backupPhase2();
     void goNextPage(QWidget *currentTab);
     void backBeforePage(QWidget *currentTab);
     void mapNextBackButton(void);
@@ -104,7 +110,9 @@ private:
 
     int tabindex=0;
     int rowindex=0;
-    int checkedvalue;
+    int backupType;
+    int backupPeriod;
+    int recoverRow;
 
     QWidget *tabRecovery;
     QWidget *tabRecoverySub;

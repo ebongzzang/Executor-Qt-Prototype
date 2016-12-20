@@ -1,7 +1,7 @@
 #ifndef UI_PlanBUIClass_H
 #define UI_PlanBUIClass_H
 
-#include "stdafx.h";
+#include "stdafx.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -12,8 +12,6 @@ public:
     QAction *actionSfsdfsdfsdf;
 
     QWidget *centralWidget;
-    QLabel *label;
-    QLabel *label_2;
     QPushButton *pushButton;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
@@ -39,9 +37,12 @@ public:
         QLabel * label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(50, 40, 47, 13));
-        QLabel label_2 = new QLabel(centralWidget);
+        QLabel * label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(30, 70, 47, 13));
+
+        label->setText(QApplication::translate("PlanBUIClass", "id", 0));
+        label_2->setText(QApplication::translate("PlanBUIClass", "password", 0));
 
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
@@ -66,7 +67,6 @@ public:
 
         menuHelp = new QMenu(menuBar);
         menuHelp->setObjectName(QStringLiteral("menuHelp"));
-
         PlanBUIClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(PlanBUIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -95,8 +95,6 @@ public:
     {
         PlanBUIClass->setWindowTitle(QApplication::translate("PlanBUIClass", "PlanBUIClass", 0));
         actionSfsdfsdfsdf->setText(QApplication::translate("PlanBUIClass", "sfsdfsdfsdf", 0));
-        label->setText(QApplication::translate("PlanBUIClass", "id", 0));
-        label_2->setText(QApplication::translate("PlanBUIClass", "password", 0));
         pushButton->setText(QApplication::translate("PlanBUIClass", "PushButton", 0));
         menuSetup->setTitle(QApplication::translate("PlanBUIClass", "Setup", 0));
         menuHelp->setTitle(QApplication::translate("PlanBUIClass", "Help", 0));
