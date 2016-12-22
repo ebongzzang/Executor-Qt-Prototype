@@ -29,15 +29,12 @@ enum backupType
     FILE=-4
 
 };
-<<<<<<< HEAD
 enum backupPeriod
 {
     ONCE=-2,
     Periodic=-3
 };
 
-=======
->>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
 /*std::map<tableColumn,std::string> column;
 column[Title] = "Title";
@@ -71,9 +68,10 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void getPathFromTree(); //정해진 트리뷰를 써야함. (람다로 수정 가능)
+    void getPathFromTree(QTreeView * sourceTree);
+
     void cratePathDialog();
-    void convertPathToLabel();
+    void convertPathToLabel(std::string filepath);
     bool backupPhase2();
     void goNextPage(QWidget *currentTab);
     void backBeforePage(QWidget *currentTab);
@@ -87,6 +85,7 @@ private:
 
     std::string dbID = "";
     std::string dbPW = ""; //로그인 창의 비교할 값을 받는 변수(ex. sql)
+    std::string absPath;
 
     QWidget *BackupWidget_1; //Login 창 이후 CentralWidget
     QTabWidget *tabWidget; //Backup,Recvoery,Status 가 들어가는 탭 위젯
@@ -102,30 +101,19 @@ private:
 
          QDialog *treeDialog;
             QTreeView *treeView;
-            QString absPath;
 
         QLabel* pathLabel_2;
-<<<<<<< HEAD
 
         QWidget *tabPhase2; //BackupPhase2
 
-=======
-
-        QWidget *tabPhase2; //BackupPhase2
-
->>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
          QPushButton *ButtonBakPerio;
          QTableView *recoverytable;
 
     int tabindex=0;
     int rowindex=0;
-<<<<<<< HEAD
     int backupType;
     int backupPeriod;
     int recoverRow;
-=======
-    int checkedvalue;
->>>>>>> 3b407f9df3ee8680e213a8e6136e78d8624ed412
 
     QWidget *tabRecovery;
     QWidget *tabRecoverySub;

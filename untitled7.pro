@@ -17,7 +17,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     stdafx.h \
-    pathwidget.h \
-    ui_mainwindow.h
+    ui_mainwindow.h \
+    tabpageclass.h
 
 FORMS    += mainwindow.ui
