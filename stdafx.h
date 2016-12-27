@@ -1,7 +1,14 @@
 #ifndef STDAFX_H
 #define STDAFX_H
+
+#pragma comment(lib,"includes/Qt5Core.lib")
+#pragma comment(lib,"includes/Qt5Gui.lib")
+#pragma comment(lib,"includes/Qt5Widgets.lib")
+
+
 #include "stdafx.h"
 
+#include <Qt>
 #include <windows.h>
 #include <iostream>
 #include <string.h>
@@ -29,7 +36,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
 #include <QtCore/QVariant>
-
+#include <QVBoxLayout>
 #include <QStandardItemModel>
 #include <QTableView>
 #include <QTableWidget>

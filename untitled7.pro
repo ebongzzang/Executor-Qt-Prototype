@@ -18,6 +18,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     stdafx.h \
     ui_mainwindow.h \
-    tabpageclass.h
+    tabpageclass.h \
+    ui_mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    +=

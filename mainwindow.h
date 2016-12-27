@@ -1,48 +1,9 @@
 #ifndef PlanBUIClass_H
 #define PlanBUIClass_H
+
 #include "stdafx.h"
-#include "ui_mainwindow.h"
-namespace Ui {
-class PlanBUIClass;
-
-}
-
-namespace Indexes {
-enum tabWidgetIndex
-{
-    tabBackup,
-    tabRecovery,
-    tabStatus
-};
-enum tableColumn
-{
-    Title,
-    Path,
-    Time,
-    Select
-};
-enum backupType
-{
-    NOTFOUND=-1,
-    SYSTEM=-2,
-    VOLUME=-3,
-    FILE=-4
-
-};
-enum backupPeriod
-{
-    ONCE=-2,
-    Periodic=-3
-};
-
-
-/*std::map<tableColumn,std::string> column;
-column[Title] = "Title";
-column[Path] = "Path";
-column[Time]= "Time";
-column[Select] = "Select";
-*/
-}
+#include "LoginUi.h"
+#include "MainForm.h"
 
 
 class PlanBUIClass : public QMainWindow
@@ -50,41 +11,24 @@ class PlanBUIClass : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit PlanBUIClass(QWidget *parent = 0);
-    bool backgroundTab(void);
-    bool backupPhase1(void);
-    void viewFilelist(std::string sPath, QWidget * widget, QTreeView *treePath);
-    int getValueFromCheckbox(QButtonGroup *buttonGroup);
-    void popupMsgbox(const char * text);
-    void makeNextButton(const char * buttonName, const char * belongWidget);
-    void recoveryPhase1();
-    void addRowToRecoveryTable(QTableWidget *tableWidget,const char * title,const char * path, const char * time);
-    void delRowToRecvoeryTable(const char * title);
-    void closeEvent(QCloseEvent *event);
-    void execTrayIcon(void);
-    bool loginCheck(QString id, QString PW);
+    PlanBUIClass(QWidget *parent = 0);
     ~PlanBUIClass();
-
+	void execLogin(QWidget *belongWidget);
+	void popupMsgbox(const char * text);
 
 private slots:
-    void on_pushButton_clicked();
-    void getPathFromTree(QTreeView * sourceTree);
-
-    void cratePathDialog();
-    void convertPathToLabel(std::string filepath);
-    bool backupPhase2();
-    void goNextPage(QWidget *currentTab);
-    void backBeforePage(QWidget *currentTab);
-    void mapNextBackButton(void);
 
 
 private:
-    Ui::PlanBUIClass *ui;
+	MainForm * mainLayout;
+	QWidget *centralWidget;
+	LoginUI * login;
+	
+
     QFileSystemModel *dirmodel;
     QStandardItemModel *model;
 
-    std::string dbID = "";
-    std::string dbPW = ""; //로그인 창의 비교할 값을 받는 변수(ex. sql)
+  
     std::string absPath;
 
     QWidget *BackupWidget_1; //Login 창 이후 CentralWidget
