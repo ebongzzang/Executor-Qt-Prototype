@@ -2,7 +2,8 @@
 
 void MainForm::setMainLayout(QMainWindow * belongWindow)
 {
-	belongWindow->setObjectName(QStringLiteral("PlanBUIClass"));
+	belongWindow->setWindowTitle(QApplication::translate("PlanBUIClass", "PlanBUIClass", 0));
+	belongWindow->setObjectName(QStringLiteral("PlanBUIClass")); //ObjectName 생략 가능
 	belongWindow->resize(1057, 634);
 
 	menuBar = new QMenuBar(belongWindow);
@@ -11,6 +12,7 @@ void MainForm::setMainLayout(QMainWindow * belongWindow)
 
 	menuHelp = new QMenu(menuBar);
 	menuHelp->setObjectName(QStringLiteral("menuHelp"));
+	menuHelp->setTitle(QApplication::translate("PlanBUIClass", "Help", 0));
 
 	menuSetup = new QMenu(menuBar);
 	menuSetup->setObjectName(QStringLiteral("menuSetup"));
@@ -19,6 +21,9 @@ void MainForm::setMainLayout(QMainWindow * belongWindow)
 	actionNew->setObjectName(QStringLiteral("actionNew"));
 	menuSetup->addAction(actionNew);
 	menuSetup->addSeparator();
+	menuSetup->setTitle(QApplication::translate("PlanBUIClass", "Setup", 0));
+
+
 
 	menuBar->addAction(menuSetup->menuAction());
 	menuBar->addAction(menuHelp->menuAction());
@@ -44,15 +49,64 @@ void MainForm::setMainLayout(QMainWindow * belongWindow)
 //	belongWindow->addToolBar(Qt::TopToolBarArea, toolBar_2);
 
 
-	retranslateUi(belongWindow);
 }
 
-void MainForm::retranslateUi(QMainWindow *belongWindow)
+void MainForm::setBackroundTab(QWidget *belongWidget)
 {
-	belongWindow->setWindowTitle(QApplication::translate("PlanBUIClass", "PlanBUIClass", 0));
-//	actionNew->setText(QApplication::translate("PlanBUIClass", "sfsdfsdfsdf", 0));
-	menuSetup->setTitle(QApplication::translate("PlanBUIClass", "Setup", 0));
-	menuHelp->setTitle(QApplication::translate("PlanBUIClass", "Help", 0));
-//	toolBar->setWindowTitle(QApplication::translate("PlanBUIClass", "toolBar", 0));
-//	toolBar_2->setWindowTitle(QApplication::translate("PlanBUIClass", "toolBar_2", 0));
-} // retranslateUi
+		//탭 위젯 추가하기
+		tabWidget = new QTabWidget(belongWidget);
+		tabWidget->setObjectName(QStringLiteral("tabWidget"));
+		tabWidget->setGeometry(QRect(30, 100, 391, 171));
+		tabWidget->resize(800, 300);
+
+		// 탭에 아이콘을 넣는 부분이다. CSS를 사용해서 넣어줌. 
+		tabWidget->setStyleSheet(QLatin1String("QTabBar::tab{\n"
+			"    height: 30px;\n"
+			"    width: 120px;\n"
+			"}\n"
+			"\n"
+			"QTabBar::tab:first {\n"
+			"     background: url(backup2.png);\n"
+			"}\n"
+			"\n"
+			"\n"
+			" QTabBar::tab:middle{\n"
+			"   background: url(backup4.png);\n"
+			"}\n"
+			"\n"
+			"QTabBar::tab:first:selected{\n"
+			"     background: url(backup.png);\n"
+			"}\n"
+			"\n"
+			"QTabBar::tab:middle:selected{\n"
+			"     background: url(backup3.png);\n"
+			"}\n"
+			"\n"
+			"QTabBar::tab:last{\n"
+			"     background: url(backup5.png);\n"
+			"}\n"
+			"QTabBar::tab:last:selected{\n"
+			"     background: url(backup6.png);\n"
+			"}\n"
+			"\n"
+			""));
+		//탭 3개를 만드는 부분이다.
+		tabBackup = new QWidget();
+		tabBackup->setObjectName(QStringLiteral("tabBackup"));
+		tabWidget->addTab(tabBackup, QString());
+
+		tabBackupSub = new QWidget(tabBackup);
+
+		tabRecovery = new QWidget();
+		tabRecovery->setObjectName(QStringLiteral("tabRecovery"));
+		tabWidget->addTab(tabRecovery, QString());
+
+		tabRecoverySub = new QWidget(tabRecovery);
+
+		tabStatus = new QWidget();
+		tabStatus->setObjectName(QStringLiteral("tabStatus"));
+		tabWidget->addTab(tabStatus, QString());
+
+		tabStatusSub = new QWidget(tabStatus);
+
+	}

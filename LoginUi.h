@@ -12,12 +12,13 @@ private:
 	QLineEdit *inputID;
 	QLineEdit *inputPW;
 	QPushButton *submitButton;
+	QWidget * tempWidget;
 	std::string dbID;
 	std::string dbPW; //로그인 창의 비교할 값을 받는 변수(ex. sql)
 	bool result;
 
 private slots:
-	void loginCheck();
+	void loginCheck(QWidget * tempWidget);
 public:
 	void enterCompareAccount(std::string id, std::string pw);
 	void makeLoginForm(QWidget * belongWidget);
@@ -25,4 +26,4 @@ public:
 	~LoginUI();
 
 };
-#endif // !LoginUI_H
+#endif // !LoginUI

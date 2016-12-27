@@ -8,21 +8,28 @@ class MainForm
 public:
 	~MainForm();
 	void setMainLayout(QMainWindow * belongWindow);
-	void retranslateUi(QMainWindow *PlanBUIClbeass);
+	void setBackroundTab(QWidget *belongWidget);
 
 private:
+
+	QVBoxLayout * mainLayout;
 
 	QMenuBar *menuBar;
 	QMenu *menuSetup;
 	QMenu *menuHelp;
-
 	QAction *actionNew;
-
 	QToolBar *mainToolBar;
-	QStatusBar *statusBar;
-	QToolBar *toolBar;
-	QToolBar *toolBar_2;
-	QVBoxLayout * mainLayout;
+	QStatusBar *statusBar; //MainLayout
+
+	QTabWidget *tabWidget;
+	QWidget * tabBackup;
+	QWidget * tabBackupSub; //tabBackup
+
+	QWidget * tabRecovery;
+	QWidget * tabRecoverySub; //tabBackup
+
+	QWidget * tabStatus;
+	QWidget * tabStatusSub; //tabBackup
 };
 
 
