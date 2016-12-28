@@ -6,19 +6,17 @@ PlanBUIClass::PlanBUIClass(QWidget *parent) :
 	QMainWindow(parent),
 	mainLayout(new MainForm())
 {
-	mainLayout->setMainLayout(this); //set Menu, title, etc..
-	centralWidget = new QWidget(this); //mainWidget on mainwindow
-	this->setCentralWidget(centralWidget);
-	execLogin(centralWidget); //login
-	// mainLayout->setBackroundTab
+	
+	QWidget* window =  mainLayout->setMainLayout(this); //set Menu, title, etc..
+	execLogin(window,"hi","hello"); //login
 	// need fix
 }
 
-void PlanBUIClass::execLogin(QWidget *belongWidget)
+void PlanBUIClass::execLogin(QWidget *belongWidget, std::string ID, std::string PW)
 {
 	login = new LoginUI(belongWidget);
 	login-> makeLoginForm(belongWidget); // 버튼 클릭시 LoginCheck 실행
-	login->enterCompareAccount("hi", "hello"); // Compare Id and Password 
+	login->enterCompareAccount(ID, PW); // Compare Id and Password 
 }
 
 void PlanBUIClass::popupMsgbox(const char * text)

@@ -7,13 +7,13 @@ class MainForm
 {
 public:
 	~MainForm();
-	void setMainLayout(QMainWindow * belongWindow);
+	QWidget * setMainLayout(QMainWindow * belongWindow); //Retrun MainWidget
 	void setBackroundTab(QWidget *belongWidget);
 
 private:
 
 	QVBoxLayout * mainLayout;
-
+	QWidget *centralWidget;
 	QMenuBar *menuBar;
 	QMenu *menuSetup;
 	QMenu *menuHelp;
