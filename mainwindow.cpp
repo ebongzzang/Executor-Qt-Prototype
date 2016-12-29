@@ -124,22 +124,22 @@ bool PlanBUIClass::backgroundTab(void)
  "\n"
  "\n"
  " QTabBar::tab:middle{\n"
- "   background: url(c:/backup4.png);\n"
+ "   background: url(backup4.png);\n"
  "}\n"
  "\n"
  "QTabBar::tab:first:selected{\n"
- "     background: url(c:/backup.png);\n"
+ "     background: url(backup.png);\n"
  "}\n"
  "\n"
  "QTabBar::tab:middle:selected{\n"
- "     background: url(c:/backup3.png);\n"
+ "     background: url(backup3.png);\n"
  "}\n"
  "\n"
  "QTabBar::tab:last{\n"
- "     background: url(c:/backup5.png);\n"
+ "     background: url(backup5.png);\n"
  "}\n"
  "QTabBar::tab:last:selected{\n"
- "     background: url(c:/backup6.png);\n"
+ "     background: url(backup6.png);\n"
  "}\n"
  "\n"
  ""));
@@ -351,7 +351,7 @@ void PlanBUIClass::execTrayIcon(void)
 
     trayIcon = new QSystemTrayIcon(this);
     trayMenu = new QMenu();
-    QIcon icon("c:\\tray.png");
+    QIcon icon("tray.png");
 
     trayIcon->setIcon(icon);
     trayIcon->setToolTip("Plan B Tray Icon");
