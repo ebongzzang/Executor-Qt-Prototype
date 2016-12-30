@@ -13,17 +13,18 @@ class PlanBUIClass : public QMainWindow
 public:
     PlanBUIClass(QWidget *parent = 0);
     ~PlanBUIClass();
-	void execLogin(QWidget *belongWidget, std::string ID, std::string PW);
+	void execLogin(std::string ID, std::string PW);
 	void popupMsgbox(const char * text);
+	MainForm * mainLayout;
+	LoginUI * login;
+	QWidget * myWidget;
 
 private slots:
 
 
 private:
-	MainForm * mainLayout;
-	
-	LoginUI * login;
-	
+
+
 
     QFileSystemModel *dirmodel;
     QStandardItemModel *model;

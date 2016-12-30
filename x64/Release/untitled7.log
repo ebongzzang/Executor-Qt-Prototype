@@ -1,1 +1,7 @@
-﻿LINK : fatal error LNK1104: 'release\\untitled7.exe' 파일을 열 수 없습니다.
+﻿  moc_MainTab.cpp
+c1xx : fatal error C1083: 소스 파일을 열 수 없습니다. 'GeneratedFiles\Debug\moc_MainTab.cpp': No such file or directory
+  MainTab.cpp
+MainTab.cpp(39): warning C4189: 'tabRecoverySub': 지역 변수가 초기화되었으나 참조되지 않았습니다.
+MainTab.cpp(33): warning C4189: 'tabBackupSub': 지역 변수가 초기화되었으나 참조되지 않았습니다.
+MainTab.cpp(45): warning C4189: 'tabStatusSub': 지역 변수가 초기화되었으나 참조되지 않았습니다.
+  코드를 생성하고 있습니다...

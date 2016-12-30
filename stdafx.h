@@ -8,11 +8,12 @@
 
 #include "stdafx.h"
 
-#include <Qt>
+#include <memory>
 #include <windows.h>
 #include <iostream>
 #include <string.h>
 
+#include <Qt>
 #include <QDebug>
 #include <QButtonGroup>
 #include <QString>

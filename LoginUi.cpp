@@ -1,13 +1,14 @@
 #include "LoginUi.h"
 #include "mainwindow.h"
-
+#include "MainTab.h"
+#include <memory>
 LoginUI::LoginUI(QWidget *parent)
-	: QWidget(parent)
+	: QWidget(parent) ,myWidget(parent)
 {
 
 }
 
-void LoginUI::loginCheck(QWidget * tempWidget)
+void LoginUI::loginCheck()
 {
 	
 	if ((QString::compare(inputID->text(), QString::fromStdString(dbID), Qt::CaseSensitive) == 0) && (QString::compare(inputPW->text(), QString::fromStdString(dbPW), Qt::CaseSensitive)) == 0)
@@ -17,6 +18,8 @@ void LoginUI::loginCheck(QWidget * tempWidget)
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.exec();
 		tempWidget->close();
+		MainTab * tab = new MainTab(myWidget);
+		tab->setTabWidget();
 	}
 	else
 	{
@@ -28,21 +31,24 @@ void LoginUI::loginCheck(QWidget * tempWidget)
 
 }
 
-void LoginUI::enterCompareAccount(std::string id, std::string pw)
+void LoginUI::enterCompareAccount(std::string id, std::string pw) //temporary
 {
 	dbID = id;
 	dbPW = pw;
 }
 
+
+
 LoginUI::~LoginUI()
 {
+	delete tempWidget;
 	delete submitButton;
 	delete inputID;
 	delete inputPW;
 }
-void LoginUI::makeLoginForm(QWidget * belongWidget)
+void LoginUI::makeLoginForm()
 {
-	tempWidget = new QWidget(belongWidget);
+	tempWidget = new QWidget(myWidget);
 	QLabel * labelId = new QLabel(tempWidget);
 	labelId->setObjectName(QStringLiteral("labelid"));
 	labelId->setGeometry(QRect(50, 40, 47, 13));
@@ -66,6 +72,6 @@ void LoginUI::makeLoginForm(QWidget * belongWidget)
 	inputPW->setObjectName(QStringLiteral("lineEdit_2"));
 	inputPW->setGeometry(QRect(130, 70, 113, 20));
 
-	connect(submitButton, &QPushButton::clicked, this, [this] {loginCheck(tempWidget); });
+	connect(submitButton, &QPushButton::clicked, this, [this] {loginCheck(); });
 }
 
